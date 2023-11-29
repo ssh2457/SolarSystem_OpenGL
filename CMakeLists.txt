@@ -10,6 +10,7 @@ if (POLICY CMP0141)
 endif()
 
 project ("SolarSystemOpenGL")
+set(CMAKE_CXX_STANDARD 17)
 
 # Include sub-projects.
 add_subdirectory ("SolarSystemOpenGL")
