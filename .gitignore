@@ -1,3 +1,7 @@
 out
-
 .vs
+ASSIMP
+GLEW
+GLFW
+GLM
+SPDLOG
