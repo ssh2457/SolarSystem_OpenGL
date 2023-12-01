@@ -41,7 +41,8 @@ int main(int argc, char** argv)
 	constexpr int HEIGHT = 864;
 
 	SPDLOG_INFO("Create GLFW window");
-	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT);
+
+	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 45.f);
 	mainWindow->Initialise();
 
 	// Camera
@@ -65,7 +66,7 @@ int main(int argc, char** argv)
 	sun->LoadModel("../../Models/Sun/Sun.obj");
 
 	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
-	glm::mat4 projection = glm::perspective(glm::radians(45.f), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 100.f);
+
 
 	// Loop until window closed
 	while (!mainWindow->GetShouldClose()) {
@@ -89,13 +90,14 @@ int main(int argc, char** argv)
 		uniformProjection = shader->GetProjectionLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
 
+		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 100.f);
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
 
 		glm::mat4 model(1.f);
-		model = glm::translate(model, glm::vec3(0.f, 0.f, 0.f));
-		model = glm::scale(model, glm::vec3(0.006f, 0.006f, 0.006f));
+		model = glm::translate(model, glm::vec3(5.f, 0.f, 0.f));
+		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
 		xWing->RenderModel();
 

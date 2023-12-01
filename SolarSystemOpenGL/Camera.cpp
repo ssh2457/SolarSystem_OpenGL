@@ -1,6 +1,6 @@
 #include "include/Camera.h"
 
-Camera::Camera(glm::vec3 startPosition, glm::vec3 startWorldUp,
+Camera::Camera(glm::vec3& startPosition, glm::vec3& startWorldUp,
 	GLfloat startYaw, GLfloat startPitch,
 	GLfloat startMoveSpeed, GLfloat startTurnSpeed)
 	: mPosition(startPosition)
@@ -8,7 +8,10 @@ Camera::Camera(glm::vec3 startPosition, glm::vec3 startWorldUp,
 	, mYaw(startYaw)
 	, mPitch(startPitch)
 	, mMovementSpeed(startMoveSpeed)
-	, mTurnSpeed(startTurnSpeed) {
+	, mTurnSpeed(startTurnSpeed)
+	, mFront(glm::vec3(0.f, 0.f, 0.f))
+	, mUp(glm::vec3(0.f, 0.f, 0.f))
+	, mRight(glm::vec3(0.f, 0.f, 0.f)) {
 	Update();
 }
 
@@ -65,6 +68,7 @@ glm::vec3 Camera::GetCameraPosition() const {
 glm::vec3 Camera::GetCameraDirection() const {
 	return mFront;
 }
+
 void Camera::Update() {
 	mFront.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
 	mFront.y = sin(glm::radians(mPitch));

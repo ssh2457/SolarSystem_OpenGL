@@ -1,8 +1,8 @@
 #include "include/Window.h"
 
 Window::Window()
-	: WIDTH(DEFAULT_WIDTH)
-	, HEIGHT(DEFAULT_HEIGHT)
+	: mWidth(DEFAULT_WIDTH)
+	, mHeight(DEFAULT_HEIGHT)
 	, mWindow(nullptr)
 	, mBufferWidth(0)
 	, mBufferHeight(0)
@@ -10,23 +10,25 @@ Window::Window()
 	, mLastY(0.f)
 	, mXChange(0.f)
 	, mYChange(0.f)
-	, mMouseFirstMoved(true) {
+	, mMouseFirstMoved(true) 
+	, mFOV(45.f) {
 	//memset(mKeys, false, 512);
 	for (int i = 0; i < 512; ++i) {
 		mKeys[i] = false;
 	}
 }
 
-Window::Window(const GLint windowWidth, const GLint windowHeight)
-	: WIDTH(windowWidth)
-	, HEIGHT(windowHeight)
+Window::Window(const GLint windowWidth, const GLint windowHeight, GLfloat fov)
+	: mWidth(windowWidth)
+	, mHeight(windowHeight)
 	, mWindow(nullptr)
 	, mBufferWidth(0)
 	, mBufferHeight(0), mLastX(0.f)
 	, mLastY(0.f)
 	, mXChange(0.f)
 	, mYChange(0.f)
-	, mMouseFirstMoved(true) {
+	, mMouseFirstMoved(true)
+	, mFOV(fov) {
 	//memset(mKeys, false, 512);
 	for (int i = 0; i < 512; ++i) {
 		mKeys[i] = false;
@@ -60,7 +62,7 @@ int Window::Initialise() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// Create window
-	mWindow = glfwCreateWindow(WIDTH, HEIGHT, "Main window", NULL, NULL);
+	mWindow = glfwCreateWindow(mWidth, mHeight, "Main window", NULL, NULL);
 	if (!mWindow) {
 		SPDLOG_ERROR("GLFW window creation failed!");
 		glfwTerminate();
@@ -135,9 +137,23 @@ GLfloat Window::GetYChange() {
 	return theChange;
 }
 
+GLfloat Window::GetFOV() const
+{
+	return mFOV;
+}
+
 void Window::CreateCallbacks(){
 	glfwSetKeyCallback(mWindow, HandleKeys);
 	glfwSetCursorPosCallback(mWindow, HandleMouse);
+	glfwSetScrollCallback(mWindow, HandleScroll);
+	glfwSetFramebufferSizeCallback(mWindow, HandleWindowSize);
+}
+
+void Window::Reshape(GLint width, GLint height) {
+	mBufferWidth = width;
+	mBufferHeight = height;
+
+	glViewport(0, 0, mBufferWidth, mBufferHeight);
 }
 
 void Window::HandleKeys(GLFWwindow* window, int key, int code, int action, int mode) {
@@ -175,4 +191,26 @@ void Window::HandleMouse(GLFWwindow* window, double xPos, double yPos) {
 
 	//SPDLOG_INFO("x: {}, y: {}", theWindow->mXChange, theWindow->mYChange);
 	printf("x: %.6f, y: %.6f\n", theWindow->mXChange, theWindow->mYChange);
+}
+
+void Window::HandleScroll(GLFWwindow* window, double xOffset, double yOffset) {
+	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+	if (theWindow->mFOV >= 1.0f && theWindow->mFOV <= 45.0f) {
+		theWindow->mFOV -= static_cast<GLfloat>(yOffset);
+	}
+		
+	if (theWindow->mFOV <= 1.0f) {
+		theWindow->mFOV = 1.0f;
+	}
+
+	if (theWindow->mFOV >= 45.0f) {
+		theWindow->mFOV = 45.0f;
+	}
+		
+}
+
+void Window::HandleWindowSize(GLFWwindow* window, GLint width, GLint height) {
+	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	theWindow->Reshape(width, height);
 }

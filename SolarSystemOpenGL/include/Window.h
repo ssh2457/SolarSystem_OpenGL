@@ -5,14 +5,19 @@
 
 #include <spdlog/spdlog.h>
 
+#include <memory>
+#include <utility>
+
 #include "Common.h"
 
 class Window {
 	static void HandleKeys(GLFWwindow* window, int key, int code, int action, int mode);
 	static void HandleMouse(GLFWwindow* window, double xPos, double yPos);
+	static void HandleScroll(GLFWwindow* window, double xOffset, double yOffset);
+	static void HandleWindowSize(GLFWwindow* window, GLint width, GLint height);
 public:
 	Window();
-	Window(const GLint windowWidth, const GLint windowHeight);
+	Window(const GLint windowWidth, const GLint windowHeight, GLfloat fov);
 	virtual ~Window();
 
 	int Initialise();
@@ -26,17 +31,24 @@ public:
 	bool* GetKeys();
 	GLfloat GetXChange();
 	GLfloat GetYChange();
+	GLfloat GetFOV() const;
 
 private:
 	GLFWwindow* mWindow;
 
 	// Window dimensions
-	const GLint WIDTH, HEIGHT;
+	GLint mWidth, mHeight;
 	GLint mBufferWidth, mBufferHeight;
+
+	// FOV: Field Of View
+	GLfloat mFOV;
 
 	bool mKeys[512];
 	GLfloat mLastX, mLastY, mXChange, mYChange;
 	bool mMouseFirstMoved;
 
 	void CreateCallbacks();
+
+	void Reshape(GLint width, GLint height);
+
 };
