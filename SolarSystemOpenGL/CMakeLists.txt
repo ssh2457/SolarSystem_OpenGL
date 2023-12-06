@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (${CMAKE_PROJECT_NAME} "main.cpp"    "include/Window.h" "Window.cpp" "include/Common.h" "include/SolarSystem.h" "SolarSystem.cpp" "include/Mesh.h" "Mesh.cpp" "include/Texture.h" "Texture.cpp" "include/Model.h" "Model.cpp" "Shader.cpp" "include/Shader.h" "include/Camera.h" "Camera.cpp")
+add_executable (${CMAKE_PROJECT_NAME} "main.cpp"    "include/Window.h" "Window.cpp" "include/Common.h" "include/SolarSystem.h" "SolarSystem.cpp" "include/Mesh.h" "Mesh.cpp" "include/Texture.h" "Texture.cpp" "include/Model.h" "Model.cpp" "Shader.cpp" "include/Shader.h" "include/Camera.h" "Camera.cpp" "include/SpaceObject.h" "SpaceObject.cpp" "include/Planet.h" "Planet.cpp" "include/Star.h" "Star.cpp")
 
 
 # TODO: Add tests and install targets if needed.

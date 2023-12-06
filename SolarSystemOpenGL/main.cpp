@@ -51,6 +51,7 @@ int main(int argc, char** argv)
 	// Solar system
 	unique_ptr<SolarSystem> solarSystem;
 	solarSystem = SolarSystem::GetInstance();
+	solarSystem->LoadSolarSystem();
 
 
 	unique_ptr<Shader> shader = make_unique<Shader>();
@@ -59,15 +60,11 @@ int main(int argc, char** argv)
 	unique_ptr<Model> xWing = make_unique<Model>();
 	xWing->LoadModel("../../Models/Xwing/x-wing.obj");
 
-	unique_ptr<Model> earth = make_unique<Model>();
-	earth->LoadModel("../../Models/Earth/Earth.obj");
-
-	unique_ptr<Model> sun = make_unique<Model>();
-	sun->LoadModel("../../Models/Sun/Sun.obj");
 
 	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
 
 
+	float angle = 0.f;
 	// Loop until window closed
 	while (!mainWindow->GetShouldClose()) {
 		GLfloat currentMs = glfwGetTime(); // SDL_GetPerformanceCounter();
@@ -95,23 +92,15 @@ int main(int argc, char** argv)
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
 
+		
+		
 		glm::mat4 model(1.f);
 		model = glm::translate(model, glm::vec3(5.f, 0.f, 0.f));
 		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
 		xWing->RenderModel();
 
-		model = glm::mat4(1.f);
-		model = glm::translate(model, glm::vec3(10.f, 0.f, 0.f));
-		model = glm::scale(model, glm::vec3(1.f, 1.f, 1.f));
-		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
-		earth->RenderModel();
-
-		model = glm::mat4(1.f);
-		model = glm::translate(model, glm::vec3(20.f, 0.f, 0.f));
-		model = glm::scale(model, glm::vec3(5.f, 5.f, 5.f));
-		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
-		sun->RenderModel();
+		solarSystem->Tick(uniformWorld, deltaTimeMs);
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();
