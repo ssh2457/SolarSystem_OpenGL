@@ -18,12 +18,14 @@ public:
 	virtual ~RevolutionObject() = default;
 
 	void CalcRevolutionPeriod(float centralBodyMu);
-	void Revolve(float centralBodyMu, GLfloat time);
+	void Revolve(float centralBodyMu, GLfloat delta, GLfloat periodToScale);
+	float GetRevolutionPeriod() const;
+
 private:
 	float mRevolutionPeriod;
 	float mEccentricity;
 	float mSemiMajorLength;
-	float mPeriod;
+	float mAccumulatedRevolutionTime;
 	float mVelocity;
 
 	float CalcEccentricAnomaly(float meanAnomaly);

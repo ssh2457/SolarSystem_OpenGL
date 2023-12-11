@@ -10,7 +10,7 @@ RevolutionObject::RevolutionObject(const std::string& fileName, const char* name
 	: SpaceObject(fileName, name, positionAtPeriapsis, velocityAtPeriapsis, radius, mass, scale, rotationPeriod)
 	, mRevolutionPeriod(0.f)
 	, mEccentricity(eccentricity)
-	, mPeriod(0.f)
+	, mAccumulatedRevolutionTime(0.f)
 	, mVelocity(velocityAtPeriapsis.length()) {
 	mSemiMajorLength = glm::length(positionAtPeriapsis);
 	CalcRevolutionPeriod(centralBodyMu);
@@ -20,13 +20,18 @@ void RevolutionObject::CalcRevolutionPeriod(float centralBodyMu) {
 	mRevolutionPeriod = 2.f * glm::pi<float>() * glm::sqrt(glm::pow(mSemiMajorLength, 3) / centralBodyMu);
 }
 
-void RevolutionObject::Revolve(float centralBodyMu, GLfloat time) {
-	mPeriod += mRevolutionPeriod * time / ONE_MINUTE_IN_MS;
-	if (mPeriod > mRevolutionPeriod) {
-		mPeriod -= mRevolutionPeriod;
+void RevolutionObject::Revolve(float centralBodyMu, GLfloat delta, GLfloat periodToScale) {
+	float revolutionProportion = periodToScale < mRevolutionPeriod ?
+								mRevolutionPeriod / periodToScale :
+								periodToScale / mRevolutionPeriod;
+
+	mAccumulatedRevolutionTime += mRevolutionPeriod * delta * revolutionProportion / EARTH_REVOLUTION_SIMULATION_PERIOD;
+	if (mAccumulatedRevolutionTime > mRevolutionPeriod) {
+		mAccumulatedRevolutionTime -= mRevolutionPeriod;
 	}
+
 	float n = 2.f * glm::pi<float>() / mRevolutionPeriod;
-	float M = n * mPeriod; // M (Mean anomaly) = n * t
+	float M = n * mAccumulatedRevolutionTime; // M (Mean anomaly) = n * t
 	float E = CalcEccentricAnomaly(M); // E = Eccentric anomaly
 	float theta = 2.f * glm::atan(glm::sqrt((1 + mEccentricity) / (1 - mEccentricity)) * glm::tan(E / 2.f));
 	float radius = mSemiMajorLength * (1 - mEccentricity * mEccentricity) / (1 + mEccentricity * glm::cos(theta));
@@ -36,6 +41,10 @@ void RevolutionObject::Revolve(float centralBodyMu, GLfloat time) {
 	SPDLOG_INFO("radius: {}", radius);
 	SPDLOG_INFO("position: {}, {}", mCurrentPosition.x, mCurrentPosition.z);
 	SPDLOG_INFO("velocity: {}", velocity);
+}
+
+float RevolutionObject::GetRevolutionPeriod() const {
+	return mRevolutionPeriod;
 }
 
 /// <summary>

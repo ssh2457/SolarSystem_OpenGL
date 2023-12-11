@@ -16,30 +16,31 @@ void SolarSystem::LoadSolarSystem() {
 									glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f),
 									695700.f, 1.98847e30,
 									5.f, 
-									10.f);
+									4971364.f);
 	mSun->LoadModel(mSun->GetFilePath());
 
 	mPlanets.push_back(std::make_unique<RevolutionObject>("../../Models/Earth/Earth.obj", "Earth",
 												glm::vec3(147.1e6f, 0.f, 0.f), glm::vec3(0.f, 0.f, -30.29f),
 												EARTH_SUN_DISTANCE, 5.972e24,
 												1.f, 
-												1.f, 
+												86164.f,
 												0.0167f,
 												//0.4,
 												mSun->GetMu()));
+	mPeriodToScale = mPlanets[0]->GetRevolutionPeriod();
 
 	for (auto& planet : mPlanets) {
 		planet->LoadModel(planet->GetFilePath());
 	}
 }
 
-void SolarSystem::Tick(GLuint uniformWorldLocation, GLfloat time) {
-	mSun->Update(uniformWorldLocation, time);
-
+void SolarSystem::Tick(GLuint uniformWorldLocation, GLfloat delta) {
+	mSun->Update(uniformWorldLocation, delta, mPeriodToScale);
 	mSun->RenderModel();
+
 	for (auto& planet : mPlanets) {
-		planet->Revolve(mSun->GetMu(), time);
-		planet->Update(uniformWorldLocation, time);
+		planet->Revolve(mSun->GetMu(), delta, mPeriodToScale);
+		planet->Update(uniformWorldLocation, delta, mPeriodToScale);
 		planet->RenderModel();
 	}
 }

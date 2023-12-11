@@ -25,7 +25,7 @@ public:
 
 	const std::string& GetFilePath() const;
 
-	void Update(GLuint uniformWorldLocation, GLfloat time);
+	void Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale);
 
 	float GetMu() const;
 
@@ -43,10 +43,10 @@ protected:
 	float mMu;
 
 	glm::vec3 mAxis;
-	float mRotationAngle;
+	float mAccumulatedRotationTime;
 	float mRotationPeriod;
 
-	glm::mat4 Translate(glm::mat4 model);
-	glm::mat4 Rotate(glm::mat4 model, GLfloat time);
-	glm::mat4 Scale(glm::mat4 model);
+	glm::mat4 Translate(glm::mat4& model);
+	glm::mat4 Rotate(glm::mat4& model, GLfloat delta, GLfloat periodToScale);
+	glm::mat4 Scale(glm::mat4& model);
 };

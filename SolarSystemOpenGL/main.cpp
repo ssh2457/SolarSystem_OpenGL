@@ -25,8 +25,8 @@
 
 using namespace std;
 
-static GLfloat deltaTimeMs = 0.0f;
-static GLfloat lastTimeMs = 0.0f;
+static GLfloat delta = 0.0f;
+static GLfloat last = 0.0f;
 
 // vertex shader
 static const char* vShader = "../../Shaders/shader.vert";
@@ -67,14 +67,15 @@ int main(int argc, char** argv)
 	float angle = 0.f;
 	// Loop until window closed
 	while (!mainWindow->GetShouldClose()) {
-		GLfloat currentMs = glfwGetTime(); // SDL_GetPerformanceCounter();
-		deltaTimeMs = currentMs - lastTimeMs; // (current - lastTime)*1000/SDL_GetPerformanceFrequency();
-		lastTimeMs = currentMs;
+		GLfloat current = glfwGetTime(); // SDL_GetPerformanceCounter();
+		delta = current - last; // (current - lastTime)*1000/SDL_GetPerformanceFrequency();
+		last = current;
+		SPDLOG_INFO("delta: {}secs", delta);
 
 		// Get + Handle User Input
 		glfwPollEvents();
 
-		camera->KeyControl(mainWindow->GetKeys(), deltaTimeMs);
+		camera->KeyControl(mainWindow->GetKeys(), delta);
 		camera->MouseControl(mainWindow->GetXChange(), mainWindow->GetYChange());
 
 		// Clear the window
@@ -100,7 +101,7 @@ int main(int argc, char** argv)
 		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
 		xWing->RenderModel();
 
-		solarSystem->Tick(uniformWorld, deltaTimeMs);
+		solarSystem->Tick(uniformWorld, delta);
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();
