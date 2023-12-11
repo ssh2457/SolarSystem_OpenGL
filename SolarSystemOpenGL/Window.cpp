@@ -170,11 +170,11 @@ void Window::HandleKeys(GLFWwindow* window, int key, int code, int action, int m
 	if (0 <= key && key < 512) {
 		if (action == GLFW_PRESS) {
 			theWindow->mKeys[key] = true;
-			SPDLOG_INFO("Pressed {}", key);
+			// SPDLOG_INFO("Pressed {}", key);
 		}
 		else if (action == GLFW_RELEASE) {
 			theWindow->mKeys[key] = false;
-			SPDLOG_INFO("Released {}", key);
+			// SPDLOG_INFO("Released {}", key);
 		}
 	}
 }
@@ -194,8 +194,7 @@ void Window::HandleMouse(GLFWwindow* window, double xPos, double yPos) {
 	theWindow->mLastX = static_cast<GLfloat>(xPos);
 	theWindow->mLastY = static_cast<GLfloat>(yPos);
 
-	//SPDLOG_INFO("x: {}, y: {}", theWindow->mXChange, theWindow->mYChange);
-	printf("x: %.6f, y: %.6f\n", theWindow->mXChange, theWindow->mYChange);
+	// printf("x: %.6f, y: %.6f\n", theWindow->mXChange, theWindow->mYChange);
 }
 
 void Window::HandleScroll(GLFWwindow* window, double xOffset, double yOffset) {

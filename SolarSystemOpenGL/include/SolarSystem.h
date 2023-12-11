@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Star.h"
-#include "Planet.h"
+#include "RevolutionObject.h"
 #include "Model.h"
 
 class SolarSystem {
@@ -19,7 +19,7 @@ public:
 	static std::unique_ptr<SolarSystem> GetInstance();
 
 	void LoadSolarSystem();
-	void Tick(GLuint uniformWorldLocation, float time);
+	void Tick(GLuint uniformWorldLocation, GLfloat time);
 private:
 	SolarSystem() = default;
 	virtual ~SolarSystem();
@@ -27,5 +27,5 @@ private:
 	static std::unique_ptr<SolarSystem> instance;
 
 	std::unique_ptr<Star> mSun;
-	std::vector<std::unique_ptr<Planet>> mPlanets;
+	std::vector<std::unique_ptr<RevolutionObject>> mPlanets;
 };

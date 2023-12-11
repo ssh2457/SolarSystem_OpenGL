@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
 
 		
-		
+		// Draw object
 		glm::mat4 model(1.f);
 		model = glm::translate(model, glm::vec3(5.f, 0.f, 0.f));
 		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
