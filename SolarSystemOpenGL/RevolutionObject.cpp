@@ -21,11 +21,8 @@ void RevolutionObject::CalcRevolutionPeriod(float centralBodyMu) {
 }
 
 void RevolutionObject::Revolve(float centralBodyMu, GLfloat delta, GLfloat periodToScale) {
-	float revolutionProportion = periodToScale < mRevolutionPeriod ?
-								mRevolutionPeriod / periodToScale :
-								periodToScale / mRevolutionPeriod;
-
-	mAccumulatedRevolutionTime += mRevolutionPeriod * delta * revolutionProportion / EARTH_REVOLUTION_SIMULATION_PERIOD;
+	float revolutionProportion = mRevolutionPeriod / periodToScale;
+	mAccumulatedRevolutionTime += mRevolutionPeriod * delta / (revolutionProportion * EARTH_REVOLUTION_SIMULATION_PERIOD);
 	if (mAccumulatedRevolutionTime > mRevolutionPeriod) {
 		mAccumulatedRevolutionTime -= mRevolutionPeriod;
 	}

@@ -49,10 +49,8 @@ glm::mat4 SpaceObject::Translate(glm::mat4& model) {
 }
 
 glm::mat4 SpaceObject::Rotate(glm::mat4& model, GLfloat delta, GLfloat periodToScale) {
-	float rotationProportion = mRotationPeriod < periodToScale ?
-								periodToScale / mRotationPeriod :
-								mRotationPeriod / periodToScale;
-	mAccumulatedRotationTime += mRotationPeriod * delta * rotationProportion / EARTH_REVOLUTION_SIMULATION_PERIOD;
+	float rotationProportion = mRotationPeriod / periodToScale;
+	mAccumulatedRotationTime += mRotationPeriod * delta / (rotationProportion * EARTH_REVOLUTION_SIMULATION_PERIOD);
 	if (mAccumulatedRotationTime > mRotationPeriod) {
 		mAccumulatedRotationTime -= mRotationPeriod;
 	}

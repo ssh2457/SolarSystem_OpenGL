@@ -11,8 +11,8 @@ class Camera {
 public:
 	Camera() = delete;
 	Camera(glm::vec3& startPosition, glm::vec3& startWorldUp,
-		GLfloat startYaw, GLfloat startPitch,
-		GLfloat startMoveSpeed, GLfloat startTurnSpeed);
+				GLfloat startYaw, GLfloat startPitch,
+				GLfloat startMoveSpeed, GLfloat startTurnSpeed);
 	virtual ~Camera();
 
 	void KeyControl(bool* keys, GLfloat deltaTime);

@@ -42,11 +42,11 @@ int main(int argc, char** argv)
 
 	SPDLOG_INFO("Create GLFW window");
 
-	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 45.f);
+	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 89.f);
 	mainWindow->Initialise();
 
 	// Camera
-	unique_ptr<Camera> camera = make_unique<Camera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.0f, 1.0f, 0.0f), 0.f, 0.0f, 5.0f, 0.5f);
+	unique_ptr<Camera> camera = make_unique<Camera>(glm::vec3(10.f, 10.f, 0.f), glm::vec3(0.0f, 1.0f, 0.0f), 0.f, 0.0f, 5.0f, 0.5f);
 
 	// Solar system
 	unique_ptr<SolarSystem> solarSystem;
