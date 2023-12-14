@@ -1,17 +1,19 @@
 #pragma once
 
 #include "SpaceObject.h"
+#include "PointLight.h"
+
+typedef struct StarParams {
+	spaceObjectParams_t base;
+} starParams_t;
 
 class Star : public SpaceObject {
 public:
 	Star() = delete;
-	Star(const std::string& fileName, const char* name, 
-		glm::vec3& position, glm::vec3& velocity,
-		float radius, float mass,
-		float scale, 
-		float rotationPeriod);
+	Star(starParams_t& starParams);
 	virtual ~Star() = default;
 
 	void Light();
 private:
+	std::unique_ptr<PointLight> mPointLight;
 };

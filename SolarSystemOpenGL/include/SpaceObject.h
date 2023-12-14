@@ -13,6 +13,23 @@
 #include "Model.h"
 #include "Common.h"
 
+
+
+typedef struct SpaceObjectParams {
+	std::string fileName;
+	const char* name;
+	glm::vec3 initialPosition;
+	glm::vec3 initialVelocity;
+	float radius;
+	float mass;
+	float scale;
+	float rotationPeriod;
+	float inclination;
+} spaceObjectParams_t;
+
+
+
+
 class SpaceObject : public Model {
 public:
 	SpaceObject() = delete;
@@ -20,7 +37,8 @@ public:
 				glm::vec3& initialPosition, glm::vec3& initialVelocity,
 				float radius, float mass,
 				float scale, 
-				float rotationPeriod);
+				float rotationPeriod,
+				float inclination);
 	virtual ~SpaceObject();
 
 	const std::string& GetFilePath() const;
@@ -32,7 +50,6 @@ public:
 protected:
 	const std::string mFileName;
 	char* mName;
-	//std::unique_ptr<char> mName;
 	glm::vec3 mInitialPosition;
 	glm::vec3 mCurrentPosition;
 	glm::vec3 mInitialVelocity;
@@ -41,6 +58,7 @@ protected:
 	float mMass;
 	const float mGravitionalConstant;
 	float mMu;
+	float mInclination;
 
 	glm::vec3 mAxis;
 	float mAccumulatedRotationTime;

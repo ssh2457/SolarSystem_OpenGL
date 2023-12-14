@@ -26,8 +26,24 @@ public:
 	GLuint GetProjectionLocation() const;
 	GLuint GetCameraPositionLocation() const;
 
+	GLuint GetCoulourLocation() const;
+
+	GLuint GetAmbientIntensityLocation() const;
+	GLuint GetDiffuseIntensityLocation() const;
+
+	GLuint GetLightPositionLocation() const;
+
+
+	GLuint GetConstantLocation() const;
+	GLuint GetLinearLocation() const;
+	GLuint GetExponentLocation() const;
+
 private:
-	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition;
+	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition,
+			mUniformColour,
+			mUniformAmbientIntensity, mUniformDiffuseIntensity, 
+			mUniformLightPosition, 
+			mUniformConstant, mUniformLinear, mUniformExponent;
 
 	void CompileShader(const char* vertexCode, const char* fragmentCode);
 	void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);

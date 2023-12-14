@@ -10,7 +10,8 @@ Window::Window()
 	, mLastY(0.f)
 	, mXChange(0.f)
 	, mYChange(0.f)
-	, mMouseFirstMoved(true) 
+	, mMouseFirstMoved(true)
+	, mMouseControl(false)
 	, mFOV(45.f) {
 	//memset(mKeys, false, 512);
 	for (int i = 0; i < 512; ++i) {
@@ -28,6 +29,7 @@ Window::Window(const GLint windowWidth, const GLint windowHeight, GLfloat fov)
 	, mXChange(0.f)
 	, mYChange(0.f)
 	, mMouseFirstMoved(true)
+	, mMouseControl(false)
 	, mFOV(fov) {
 	//memset(mKeys, false, 512);
 	for (int i = 0; i < 512; ++i) {
@@ -79,7 +81,7 @@ int Window::Initialise() {
 	CreateCallbacks();
 
 	// Hide mouse cursor in window
-	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	// glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	// Allow mordern extension features
 	glewExperimental = GL_TRUE;
@@ -142,16 +144,20 @@ GLfloat Window::GetYChange() {
 	return theChange;
 }
 
-GLfloat Window::GetFOV() const
-{
+GLfloat Window::GetFOV() const {
 	return mFOV;
+}
+
+bool Window::GetMouseControl() const {
+	return mMouseControl;
 }
 
 void Window::CreateCallbacks(){
 	glfwSetKeyCallback(mWindow, HandleKeys);
-	glfwSetCursorPosCallback(mWindow, HandleMouse);
 	glfwSetScrollCallback(mWindow, HandleScroll);
 	glfwSetFramebufferSizeCallback(mWindow, HandleWindowSize);
+	glfwSetCursorPosCallback(mWindow, HandleMousePos);
+	glfwSetMouseButtonCallback(mWindow, HandleOnMouseButton);
 }
 
 void Window::Reshape(GLint width, GLint height) {
@@ -179,8 +185,17 @@ void Window::HandleKeys(GLFWwindow* window, int key, int code, int action, int m
 	}
 }
 
-void Window::HandleMouse(GLFWwindow* window, double xPos, double yPos) {
+void Window::HandleMousePos(GLFWwindow* window, double xPos, double yPos) {
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+
+	if (theWindow->mMouseControl == false) {
+		theWindow->mXChange = 0.f;
+		theWindow->mYChange = 0.f;
+
+		theWindow->mLastX = static_cast<GLfloat>(xPos);
+		theWindow->mLastY = static_cast<GLfloat>(yPos);
+		return;
+	}
 
 	if (theWindow->mMouseFirstMoved) {
 		theWindow->mLastX = static_cast<GLfloat>(xPos);
@@ -195,6 +210,25 @@ void Window::HandleMouse(GLFWwindow* window, double xPos, double yPos) {
 	theWindow->mLastY = static_cast<GLfloat>(yPos);
 
 	// printf("x: %.6f, y: %.6f\n", theWindow->mXChange, theWindow->mYChange);
+}
+
+
+void Window::HandleOnMouseButton(GLFWwindow* window, int button, int action, int modifier) {
+	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	
+	theWindow->MouseButton(button, action);
+
+}
+
+void Window::MouseButton(int button, int action) {
+	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+		if (action == GLFW_PRESS) {
+			mMouseControl = true;
+		}
+		else if (action == GLFW_RELEASE) {
+			mMouseControl = false;
+		}
+	}
 }
 
 void Window::HandleScroll(GLFWwindow* window, double xOffset, double yOffset) {

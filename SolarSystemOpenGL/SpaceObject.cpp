@@ -1,10 +1,12 @@
 #include "include/SpaceObject.h"
 
+
 SpaceObject::SpaceObject(const std::string& fileName, const char* name, 
 						glm::vec3& initialPosition, glm::vec3& initialVelocity,
 						float radius, float mass, 
 						float scale, 
-						float rotationPeriod)
+						float rotationPeriod,
+						float inclination)
 	: mFileName(fileName)
 	, mName(nullptr)
 	, mInitialPosition(initialPosition)
@@ -16,11 +18,16 @@ SpaceObject::SpaceObject(const std::string& fileName, const char* name,
 	, mRotationPeriod(rotationPeriod)
 	, mGravitionalConstant(6.6743e-20)
 	, mAxis(glm::vec3(0.f, 1.f, 0.f))
-	, mAccumulatedRotationTime(0.f) {
+	, mAccumulatedRotationTime(0.f)
+	, mInclination (inclination) {
 	mName = new char[strlen(name) + 1];
 	memcpy(mName, name, strlen(name) + 1);
 	mName[strlen(name)] = '\0';
 	mMu = mGravitionalConstant * mMass;
+
+	glm::mat4 rotationMat(1.f);
+	rotationMat = glm::rotate(rotationMat, mInclination, glm::vec3(0.f, 0.f, -1.f));
+	mAxis = glm::vec3(rotationMat * glm::vec4(mAxis, 1.f));
 }
 
 SpaceObject::~SpaceObject() {

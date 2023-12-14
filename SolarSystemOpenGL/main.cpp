@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 
 	SPDLOG_INFO("Create GLFW window");
 
-	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 89.f);
+	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 45.f);
 	mainWindow->Initialise();
 
 	// Camera
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 		uniformProjection = shader->GetProjectionLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
 
-		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 100.f);
+		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);

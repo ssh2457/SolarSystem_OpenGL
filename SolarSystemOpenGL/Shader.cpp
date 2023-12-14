@@ -5,7 +5,14 @@ Shader::Shader()
 	, mUniformProjection(0)
 	, mUniformWorld(0)
 	, mUniformView(0)
-	, mUniformCameraPosition(0) {
+	, mUniformCameraPosition(0)
+	, mUniformColour(0)
+	, mUniformAmbientIntensity(0)
+	, mUniformDiffuseIntensity(0)
+	, mUniformLightPosition(0)
+	, mUniformConstant(0)
+	, mUniformLinear(0)
+	, mUniformExponent(0) {
 
 }
 
@@ -57,24 +64,48 @@ void Shader::ClearShader() {
 	mUniformProjection = 0;
 }
 
-GLuint Shader::GetWorldLocation() const
-{
+GLuint Shader::GetWorldLocation() const {
 	return mUniformWorld;
 }
 
-GLuint Shader::GetViewLocation() const
-{
+GLuint Shader::GetViewLocation() const {
 	return mUniformView;
 }
 
-GLuint Shader::GetProjectionLocation() const
-{
+GLuint Shader::GetProjectionLocation() const {
 	return mUniformProjection;
 }
 
-GLuint Shader::GetCameraPositionLocation() const
-{
+GLuint Shader::GetCameraPositionLocation() const {
 	return mUniformCameraPosition;
+}
+
+GLuint Shader::GetCoulourLocation() const {
+	return mUniformColour;
+}
+
+GLuint Shader::GetAmbientIntensityLocation() const {
+	return mUniformAmbientIntensity;
+}
+
+GLuint Shader::GetDiffuseIntensityLocation() const {
+	return mUniformDiffuseIntensity;
+}
+
+GLuint Shader::GetLightPositionLocation() const {
+	return mUniformLightPosition;
+}
+
+GLuint Shader::GetConstantLocation() const {
+	return mUniformConstant;
+}
+
+GLuint Shader::GetLinearLocation() const {
+	return mUniformLinear;
+}
+
+GLuint Shader::GetExponentLocation() const {
+	return mUniformExponent;
 }
 
 void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
@@ -111,6 +142,17 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	mUniformView = glGetUniformLocation(mShaderID, "view");
 	mUniformProjection = glGetUniformLocation(mShaderID, "projection");
 	mUniformCameraPosition = glGetUniformLocation(mShaderID, "cameraPosition");
+
+	mUniformColour = glGetUniformLocation(mShaderID, "colour");
+
+	mUniformAmbientIntensity = glGetUniformLocation(mShaderID, "ambientIntensity");
+	mUniformDiffuseIntensity = glGetUniformLocation(mShaderID, "diffuseIntensity");
+
+	mUniformLightPosition = glGetUniformLocation(mShaderID, "lightPosition");
+
+	mUniformConstant = glGetUniformLocation(mShaderID, "constant");
+	mUniformLinear = glGetUniformLocation(mShaderID, "linear");
+	mUniformExponent = glGetUniformLocation(mShaderID, "exponent");
 }
 
 void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {

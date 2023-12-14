@@ -2,12 +2,18 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "Star.h"
 #include "SpaceObject.h"
+
+typedef struct RevolutionObjectParams {
+	spaceObjectParams_t base;
+	float eccentricity;
+	float centralBodyMu;
+} revolutionObjectParams_t;
 
 class RevolutionObject : public SpaceObject {
 public:
 	RevolutionObject() = delete;
+	/*
 	RevolutionObject(const std::string& fileName, const char* name,
 					glm::vec3& positionAtPeriapsis, glm::vec3& velocityAtPeriapsis,
 					float radius, float mass,
@@ -15,6 +21,8 @@ public:
 					float rotationPeriod,
 					float eccentricity,
 					float centralBodyMu);
+					*/
+	RevolutionObject(revolutionObjectParams_t& revolutionObjectParams);
 	virtual ~RevolutionObject() = default;
 
 	void CalcRevolutionPeriod(float centralBodyMu);

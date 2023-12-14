@@ -12,9 +12,11 @@
 
 class Window {
 	static void HandleKeys(GLFWwindow* window, int key, int code, int action, int mode);
-	static void HandleMouse(GLFWwindow* window, double xPos, double yPos);
+	static void HandleMousePos(GLFWwindow* window, double xPos, double yPos);
+	static void HandleOnMouseButton(GLFWwindow* window, int button, int action, int modifier);
 	static void HandleScroll(GLFWwindow* window, double xOffset, double yOffset);
 	static void HandleWindowSize(GLFWwindow* window, GLint width, GLint height);
+	
 public:
 	Window();
 	Window(const GLint windowWidth, const GLint windowHeight, GLfloat fov);
@@ -32,6 +34,7 @@ public:
 	GLfloat GetXChange();
 	GLfloat GetYChange();
 	GLfloat GetFOV() const;
+	bool GetMouseControl() const;
 
 private:
 	GLFWwindow* mWindow;
@@ -46,9 +49,11 @@ private:
 	bool mKeys[512];
 	GLfloat mLastX, mLastY, mXChange, mYChange;
 	bool mMouseFirstMoved;
+	bool mMouseControl;
 
 	void CreateCallbacks();
 
 	void Reshape(GLint width, GLint height);
 
+	void MouseButton(int button, int action);
 };

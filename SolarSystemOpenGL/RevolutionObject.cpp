@@ -1,5 +1,6 @@
 #include "include/RevolutionObject.h"
 
+/*
 RevolutionObject::RevolutionObject(const std::string& fileName, const char* name,
 				glm::vec3& positionAtPeriapsis, glm::vec3& velocityAtPeriapsis,
 				float radius, float mass,
@@ -11,9 +12,25 @@ RevolutionObject::RevolutionObject(const std::string& fileName, const char* name
 	, mRevolutionPeriod(0.f)
 	, mEccentricity(eccentricity)
 	, mAccumulatedRevolutionTime(0.f)
-	, mVelocity(velocityAtPeriapsis.length()) {
+	, mVelocity(velocityAtPeriapsis.length())
+	, mSemiMajorLength(glm::length(positionAtPeriapsis))
+{
 	mSemiMajorLength = glm::length(positionAtPeriapsis);
 	CalcRevolutionPeriod(centralBodyMu);
+}
+*/
+
+RevolutionObject::RevolutionObject(revolutionObjectParams_t& revolutionObjectParams)
+	: SpaceObject(revolutionObjectParams.base.fileName, revolutionObjectParams.base.name,
+		revolutionObjectParams.base.initialPosition, revolutionObjectParams.base.initialVelocity,
+		revolutionObjectParams.base.radius, revolutionObjectParams.base.mass,
+		revolutionObjectParams.base.scale, revolutionObjectParams.base.rotationPeriod, revolutionObjectParams.base.inclination)
+	, mRevolutionPeriod(0.f)
+	, mEccentricity(revolutionObjectParams.eccentricity)
+	, mAccumulatedRevolutionTime(0.f)
+	, mVelocity(glm::length(revolutionObjectParams.base.initialVelocity))
+	, mSemiMajorLength(glm::length(revolutionObjectParams.base.initialPosition)) {
+	CalcRevolutionPeriod(revolutionObjectParams.centralBodyMu);
 }
 
 void RevolutionObject::CalcRevolutionPeriod(float centralBodyMu) {
