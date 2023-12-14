@@ -59,7 +59,6 @@ int main(int argc, char** argv)
 	
 	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
 
-
 	float angle = 0.f;
 	// Loop until window closed
 	while (!mainWindow->GetShouldClose()) {
