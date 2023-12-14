@@ -522,7 +522,7 @@
 71288	75402	7229824607744941	ASSIMP/test/CMakeFiles/unit.dir/unit/utSplitLargeMeshes.cpp.obj	beeb58cc8153e89d
 74015	77710	7229824631663909	ASSIMP/test/CMakeFiles/unit.dir/__/contrib/googletest/googletest/src/gtest-all.cc.obj	ade65ca4168532e7
 77711	82177	7229824673900379	ASSIMP/bin/unit.exe	d072d431f4c54a07
-16	1385	7242851129054994	build.ninja	deeabf518579eab2
+16	1385	7242858753627583	build.ninja	deeabf518579eab2
 61	2562	7242672114327259	SolarSystemOpenGL/CMakeFiles/SolarSystemOpenGL.dir/Window.cpp.obj	698cb3d011849557
 57	3152	7242805092401661	SolarSystemOpenGL/CMakeFiles/SolarSystemOpenGL.dir/SolarSystem.cpp.obj	355b90c7c08af9b5
 49	169	7231329521027828	SolarSystemOpenGL/CMakeFiles/SolarSystemOpenGL.dir/Mesh.cpp.obj	5df58aa431a8755e
