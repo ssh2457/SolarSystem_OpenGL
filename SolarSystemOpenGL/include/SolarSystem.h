@@ -10,6 +10,8 @@
 #include "RevolutionObject.h"
 #include "Model.h"
 
+#include "Shader.h"
+
 class SolarSystem {
 	friend std::unique_ptr<SolarSystem> std::make_unique<SolarSystem>();
 	friend std::unique_ptr<SolarSystem>::deleter_type;
@@ -20,7 +22,7 @@ public:
 	static std::unique_ptr<SolarSystem> GetInstance();
 
 	void LoadSolarSystem();
-	void Tick(GLuint uniformWorldLocation, GLfloat delta);
+	void Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta);
 private:
 	SolarSystem() = default;
 	virtual ~SolarSystem();

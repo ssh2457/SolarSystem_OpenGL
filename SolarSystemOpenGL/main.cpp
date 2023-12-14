@@ -57,10 +57,6 @@ int main(int argc, char** argv)
 	unique_ptr<Shader> shader = make_unique<Shader>();
 	shader->CreateFromFiles(vShader, fShader);
 	
-	unique_ptr<Model> xWing = make_unique<Model>();
-	xWing->LoadModel("../../Models/Xwing/x-wing.obj");
-
-
 	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
 
 
@@ -95,19 +91,12 @@ int main(int argc, char** argv)
 
 		
 		// Draw object
-		glm::mat4 model(1.f);
-		model = glm::translate(model, glm::vec3(5.f, 0.f, 0.f));
-		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		glUniformMatrix4fv(uniformWorld, 1, GL_FALSE, glm::value_ptr(model));
-		xWing->RenderModel();
-
-		solarSystem->Tick(uniformWorld, delta);
+		solarSystem->Tick(shader.get(), uniformWorld, delta);
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();
 	}
 
-	xWing->ClearModel();
 
 	return 0;
 }

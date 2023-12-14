@@ -13,7 +13,7 @@ public:
 	Star(starParams_t& starParams);
 	virtual ~Star() = default;
 
-	void Light();
+	PointLight* GetPointLight() const;
 private:
 	std::unique_ptr<PointLight> mPointLight;
 };

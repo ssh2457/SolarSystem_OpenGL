@@ -6,7 +6,7 @@ Shader::Shader()
 	, mUniformWorld(0)
 	, mUniformView(0)
 	, mUniformCameraPosition(0)
-	, mUniformColour(0)
+	, mUniformLightColour(0)
 	, mUniformAmbientIntensity(0)
 	, mUniformDiffuseIntensity(0)
 	, mUniformLightPosition(0)
@@ -80,8 +80,8 @@ GLuint Shader::GetCameraPositionLocation() const {
 	return mUniformCameraPosition;
 }
 
-GLuint Shader::GetCoulourLocation() const {
-	return mUniformColour;
+GLuint Shader::GetLightCoulourLocation() const {
+	return mUniformLightColour;
 }
 
 GLuint Shader::GetAmbientIntensityLocation() const {
@@ -106,6 +106,13 @@ GLuint Shader::GetLinearLocation() const {
 
 GLuint Shader::GetExponentLocation() const {
 	return mUniformExponent;
+}
+
+void Shader::SetPointLight(PointLight* light) {
+	light->UseLight(mUniformLightColour,
+					mUniformAmbientIntensity, mUniformDiffuseIntensity,
+					mUniformLightPosition,
+					mUniformConstant, mUniformLinear, mUniformExponent);
 }
 
 void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
@@ -143,7 +150,7 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	mUniformProjection = glGetUniformLocation(mShaderID, "projection");
 	mUniformCameraPosition = glGetUniformLocation(mShaderID, "cameraPosition");
 
-	mUniformColour = glGetUniformLocation(mShaderID, "colour");
+	mUniformLightColour = glGetUniformLocation(mShaderID, "lightColour");
 
 	mUniformAmbientIntensity = glGetUniformLocation(mShaderID, "ambientIntensity");
 	mUniformDiffuseIntensity = glGetUniformLocation(mShaderID, "diffuseIntensity");

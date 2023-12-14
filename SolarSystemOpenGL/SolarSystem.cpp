@@ -115,7 +115,8 @@ void SolarSystem::LoadSolarSystem() {
 	}
 }
 
-void SolarSystem::Tick(GLuint uniformWorldLocation, GLfloat delta) {
+void SolarSystem::Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta) {
+	shader->SetPointLight(mSun->GetPointLight());
 	mSun->Update(uniformWorldLocation, delta, mPeriodToScale);
 	mSun->RenderModel();
 

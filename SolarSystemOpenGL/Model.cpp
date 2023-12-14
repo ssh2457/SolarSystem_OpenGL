@@ -79,9 +79,9 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene) {
 		}
 
 		// Input normal vector (nx, ny, nz)
-		vertices.push_back(-mesh->mNormals[i].x);
-		vertices.push_back(-mesh->mNormals[i].y);
-		vertices.push_back(-mesh->mNormals[i].z);
+		vertices.push_back(mesh->mNormals[i].x);
+		vertices.push_back(mesh->mNormals[i].y);
+		vertices.push_back(mesh->mNormals[i].z);
 	}
 
 	for (size_t i = 0; i < mesh->mNumFaces; ++i) {

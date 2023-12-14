@@ -6,8 +6,8 @@
 #include <string>
 #include <fstream>
 
-#include "include/Common.h"
-
+#include "Common.h"
+#include "PointLight.h"
 
 class Shader {
 public:
@@ -26,7 +26,7 @@ public:
 	GLuint GetProjectionLocation() const;
 	GLuint GetCameraPositionLocation() const;
 
-	GLuint GetCoulourLocation() const;
+	GLuint GetLightCoulourLocation() const;
 
 	GLuint GetAmbientIntensityLocation() const;
 	GLuint GetDiffuseIntensityLocation() const;
@@ -38,9 +38,11 @@ public:
 	GLuint GetLinearLocation() const;
 	GLuint GetExponentLocation() const;
 
+	void SetPointLight(PointLight* light);
+
 private:
 	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition,
-			mUniformColour,
+			mUniformLightColour,
 			mUniformAmbientIntensity, mUniformDiffuseIntensity, 
 			mUniformLightPosition, 
 			mUniformConstant, mUniformLinear, mUniformExponent;

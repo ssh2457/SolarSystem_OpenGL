@@ -13,16 +13,16 @@ Star::Star(starParams_t& starParams)
 	pointLightParams.base.green = 1.f;
 	pointLightParams.base.blue = 1.f;
 
-	pointLightParams.base.ambientIntensity = 0.1f;
-	pointLightParams.base.diffuseIntensity = 0.1f;
+	pointLightParams.base.ambientIntensity = 0.025f;
+	pointLightParams.base.diffuseIntensity = 1.0f;
 
 	pointLightParams.posX = mInitialPosition.x;
 	pointLightParams.posY = mInitialPosition.y;
 	pointLightParams.posZ = mInitialPosition.z;
 
-	pointLightParams.con = 0.3f;
-	pointLightParams.lin = 0.2f;
-	pointLightParams.exp = 0.1f;
+	pointLightParams.con = 1.f;
+	pointLightParams.lin = 0.0001f;
+	pointLightParams.exp = 0.00001f;
 
 	mPointLight = std::make_unique<PointLight>(pointLightParams.base.red, pointLightParams.base.green, pointLightParams.base.blue,
 												pointLightParams.base.ambientIntensity, pointLightParams.base.diffuseIntensity,
@@ -30,7 +30,6 @@ Star::Star(starParams_t& starParams)
 												pointLightParams.con, pointLightParams.lin, pointLightParams.exp);
 }
 
-void Star::Light() {
-	//mPointLight->UseLight();
+PointLight* Star::GetPointLight() const {
+	return mPointLight.get();
 }
-

@@ -1,0 +1,45 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"GLFW/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 189,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "lib",
+			"paths" : 
+			[
+				"GLFW/src/glfw3d.lib"
+			],
+			"targetId" : "glfw::@824f0ad28a3ec3786593",
+			"targetIndex" : 10,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "GLFW/src",
+		"source" : "GLFW/src"
+	}
+}
