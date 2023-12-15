@@ -14,7 +14,9 @@ add_executable (${CMAKE_PROJECT_NAME} "main.cpp"
 										"include/Camera.h" "Camera.cpp" 
 										"include/SpaceObject.h" "SpaceObject.cpp" 
 										"include/RevolutionObject.h" "RevolutionObject.cpp" 
-										"include/Star.h" "Star.cpp" "Light.cpp" "include/PointLight.h" "PointLight.cpp")
+										"include/Star.h" "Star.cpp" 
+										"include/Light.h" "Light.cpp" 
+										"include/PointLight.h" "PointLight.cpp" "include/SimpleShader.h" "SimpleShader.cpp")
 
 
 # TODO: Add tests and install targets if needed.

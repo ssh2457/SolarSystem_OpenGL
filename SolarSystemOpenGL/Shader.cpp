@@ -1,11 +1,7 @@
 #include "include/Shader.h"
 
 Shader::Shader()
-	: mShaderID(0)
-	, mUniformProjection(0)
-	, mUniformWorld(0)
-	, mUniformView(0)
-	, mUniformCameraPosition(0)
+	: SimpleShader()
 	, mUniformLightColour(0)
 	, mUniformAmbientIntensity(0)
 	, mUniformDiffuseIntensity(0)
@@ -20,39 +16,6 @@ Shader::~Shader() {
 	ClearShader();
 }
 
-void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode) {
-	CompileShader(vertexCode, fragmentCode);
-}
-
-void Shader::CreateFromFiles(const char* vertexPath, const char* fragmentPath) {
-	std::string vertexCode = ReadFile(vertexPath);
-	std::string fragmentCode = ReadFile(fragmentPath);
-
-	CreateFromString(vertexCode.c_str(), fragmentCode.c_str());
-}
-
-std::string Shader::ReadFile(const char* filePath) {
-	std::string content = "";
-	std::ifstream fileStream(filePath, std::ios::in);
-	if (!fileStream.is_open()) {
-		SPDLOG_ERROR("Failed to read {}! File doesn't exist", filePath);
-		return "";
-	}
-
-	std::string line = "";
-	while (!fileStream.eof()) {
-		std::getline(fileStream, line);
-		content.append(line + '\n');
-	}
-	fileStream.close();
-
-	return content;
-}
-
-void Shader::UseShader() {
-	glUseProgram(mShaderID);
-}
-
 void Shader::ClearShader() {
 	if (mShaderID != 0) {
 		glDeleteProgram(mShaderID);
@@ -62,22 +25,18 @@ void Shader::ClearShader() {
 	mUniformWorld = 0;
 	mUniformView = 0;
 	mUniformProjection = 0;
-}
+	mUniformCameraPosition = 0;
 
-GLuint Shader::GetWorldLocation() const {
-	return mUniformWorld;
-}
+	mUniformLightColour = 0;
 
-GLuint Shader::GetViewLocation() const {
-	return mUniformView;
-}
+	mUniformAmbientIntensity = 0;
+	mUniformDiffuseIntensity = 0;
 
-GLuint Shader::GetProjectionLocation() const {
-	return mUniformProjection;
-}
+	mUniformLightPosition = 0;
 
-GLuint Shader::GetCameraPositionLocation() const {
-	return mUniformCameraPosition;
+	mUniformConstant = 0;
+	mUniformLinear = 0;
+	mUniformExponent = 0;
 }
 
 GLuint Shader::GetLightCoulourLocation() const {
@@ -161,27 +120,3 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	mUniformLinear = glGetUniformLocation(mShaderID, "linear");
 	mUniformExponent = glGetUniformLocation(mShaderID, "exponent");
 }
-
-void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {
-	GLuint theShader = glCreateShader(shaderType);
-
-	const GLchar* const* theCode = &shaderCode;
-	GLint codeLength = strlen(shaderCode);
-
-	glShaderSource(theShader, 1, theCode, &codeLength);
-	glCompileShader(theShader);
-
-	GLint result = 0;
-	GLchar eLog[512] = { 0, };
-
-	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
-	if (!result) {
-		glGetShaderInfoLog(theShader, sizeof(eLog), NULL, eLog);
-		SPDLOG_ERROR("Error compiling the {} shader: {}", shaderType, eLog);
-		//printf("Error compiling the %d shader: %s\n", shaderType, eLog);
-		return;
-	}
-
-	glAttachShader(theProgram, theShader);
-}
-

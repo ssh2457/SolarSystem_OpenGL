@@ -8,23 +8,15 @@
 
 #include "Common.h"
 #include "PointLight.h"
+#include "SimpleShader.h"
 
-class Shader {
+class Shader : public SimpleShader {
 public:
 	Shader();
 	virtual ~Shader();
 
-	void CreateFromString(const char* vertexCode, const char* fragmentCode);
-	void CreateFromFiles(const char* vertexPath, const char* fragmentPath);
-	std::string ReadFile(const char* filePath);
+	virtual void ClearShader() override;
 
-	void UseShader();
-	void ClearShader();
-
-	GLuint GetWorldLocation() const;
-	GLuint GetViewLocation() const;
-	GLuint GetProjectionLocation() const;
-	GLuint GetCameraPositionLocation() const;
 
 	GLuint GetLightCoulourLocation() const;
 
@@ -41,12 +33,10 @@ public:
 	void SetPointLight(PointLight* light);
 
 private:
-	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition,
-			mUniformLightColour,
+	GLuint	mUniformLightColour,
 			mUniformAmbientIntensity, mUniformDiffuseIntensity, 
 			mUniformLightPosition, 
 			mUniformConstant, mUniformLinear, mUniformExponent;
 
-	void CompileShader(const char* vertexCode, const char* fragmentCode);
-	void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
+	virtual void CompileShader(const char* vertexCode, const char* fragmentCode) override;
 };

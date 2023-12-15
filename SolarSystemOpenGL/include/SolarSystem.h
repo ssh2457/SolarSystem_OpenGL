@@ -23,6 +23,11 @@ public:
 
 	void LoadSolarSystem();
 	void Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta);
+
+
+	// TEST FUNCTIONS
+	Star* GetSun() const;
+	GLfloat GetPeriodToScale() const;
 private:
 	SolarSystem() = default;
 	virtual ~SolarSystem();

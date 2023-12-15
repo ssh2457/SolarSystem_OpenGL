@@ -52,9 +52,11 @@ void RevolutionObject::Revolve(float centralBodyMu, GLfloat delta, GLfloat perio
 	mCurrentPosition = glm::rotate(glm::normalize(mInitialPosition), theta, glm::vec3(0.f, 1.f, 0.f)) * radius;
 	float velocity = glm::sqrt(centralBodyMu * ((2.f / radius) - (1.f / mSemiMajorLength)));
 
+	/*
 	SPDLOG_INFO("radius: {}", radius);
 	SPDLOG_INFO("position: {}, {}", mCurrentPosition.x, mCurrentPosition.z);
 	SPDLOG_INFO("velocity: {}", velocity);
+	*/
 }
 
 float RevolutionObject::GetRevolutionPeriod() const {

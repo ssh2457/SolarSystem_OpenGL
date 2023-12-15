@@ -18,6 +18,7 @@
 
 #include "include/Common.h"
 #include "include/Camera.h"
+#include "include/SimpleShader.h"
 #include "include/Shader.h"
 #include "include/Window.h"
 #include "include/SolarSystem.h"
@@ -30,9 +31,12 @@ static GLfloat last = 0.0f;
 
 // vertex shader
 static const char* vShader = "../../Shaders/shader.vert";
+static const char* vSimpleShader = "../../Shaders/SimpleShader.vert";
 
 // fragment shader
 static const char* fShader = "../../Shaders/shader.frag";
+static const char* fSimpleShader = "../../Shaders/SimpleShader.frag";
+
 
 int main(int argc, char** argv)
 {
@@ -56,6 +60,9 @@ int main(int argc, char** argv)
 
 	unique_ptr<Shader> shader = make_unique<Shader>();
 	shader->CreateFromFiles(vShader, fShader);
+
+	unique_ptr<Shader> simpleShader = make_unique<Shader>();
+	simpleShader->CreateFromFiles(vSimpleShader, fSimpleShader);
 	
 	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
 
@@ -78,13 +85,27 @@ int main(int argc, char** argv)
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		simpleShader->UseShader();
+		uniformWorld = simpleShader->GetWorldLocation();
+		uniformView = simpleShader->GetViewLocation();
+		uniformProjection = simpleShader->GetProjectionLocation();
+		uniformCameraPosition = simpleShader->GetCameraPositionLocation();
+
+		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
+		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
+		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
+
+		solarSystem->GetSun()->Update(uniformWorld, delta, solarSystem->GetPeriodToScale());
+		solarSystem->GetSun()->RenderModel();
+
 		shader->UseShader();
 		uniformWorld = shader->GetWorldLocation();
 		uniformView = shader->GetViewLocation();
 		uniformProjection = shader->GetProjectionLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
 
-		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
+		projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);

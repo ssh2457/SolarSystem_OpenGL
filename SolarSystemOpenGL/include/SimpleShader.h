@@ -1,0 +1,35 @@
+#pragma once
+
+#include <gl/glew.h>
+#include <spdlog/spdlog.h>
+
+#include <string>
+#include <fstream>
+
+#include "Common.h"
+#include "PointLight.h"
+
+class SimpleShader {
+public:
+	SimpleShader();
+	virtual ~SimpleShader();
+
+	void CreateFromString(const char* vertexCode, const char* fragmentCode);
+	void CreateFromFiles(const char* vertexPath, const char* fragmentPath);
+	std::string ReadFile(const char* filePath);
+
+	void UseShader();
+	virtual void ClearShader();
+
+	GLuint GetWorldLocation() const;
+	GLuint GetViewLocation() const;
+	GLuint GetProjectionLocation() const;
+	GLuint GetCameraPositionLocation() const;
+
+
+protected:
+	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition;
+
+	virtual void CompileShader(const char* vertexCode, const char* fragmentCode);
+	void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
+};

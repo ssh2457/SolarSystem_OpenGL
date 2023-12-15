@@ -117,8 +117,8 @@ void SolarSystem::LoadSolarSystem() {
 
 void SolarSystem::Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta) {
 	shader->SetPointLight(mSun->GetPointLight());
-	mSun->Update(uniformWorldLocation, delta, mPeriodToScale);
-	mSun->RenderModel();
+	//mSun->Update(uniformWorldLocation, delta, mPeriodToScale);
+	//mSun->RenderModel();
 
 	for (auto& planet : mPlanets) {
 		planet->Revolve(mSun->GetMu(), delta, mPeriodToScale);
@@ -127,9 +127,21 @@ void SolarSystem::Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delt
 	}
 }
 
+
 SolarSystem::~SolarSystem() {
 	mSun = nullptr;
 	for (auto& planet : mPlanets) {
 		planet = nullptr;
 	}
+}
+
+
+
+Star* SolarSystem::GetSun() const {
+	return mSun.get();
+}
+
+GLfloat SolarSystem::GetPeriodToScale() const
+{
+	return mPeriodToScale;
 }
