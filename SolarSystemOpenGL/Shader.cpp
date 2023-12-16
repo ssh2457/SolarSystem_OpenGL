@@ -2,6 +2,7 @@
 
 Shader::Shader()
 	: SimpleShader()
+	, mUniformCameraPosition(0)
 	, mUniformLightColour(0)
 	, mUniformAmbientIntensity(0)
 	, mUniformDiffuseIntensity(0)
@@ -22,9 +23,6 @@ void Shader::ClearShader() {
 		mShaderID = 0;
 	}
 
-	mUniformWorld = 0;
-	mUniformView = 0;
-	mUniformProjection = 0;
 	mUniformCameraPosition = 0;
 
 	mUniformLightColour = 0;
@@ -37,6 +35,11 @@ void Shader::ClearShader() {
 	mUniformConstant = 0;
 	mUniformLinear = 0;
 	mUniformExponent = 0;
+}
+
+GLuint Shader::GetCameraPositionLocation() const
+{
+	return mUniformCameraPosition;
 }
 
 GLuint Shader::GetLightCoulourLocation() const {
@@ -103,10 +106,11 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 		return;
 	}
 
+	mUniformBlock = glGetUniformBlockIndex(mShaderID, "Matrices");
+	glUniformBlockBinding(mShaderID, mUniformBlock, mBindingPoint);
 
 	mUniformWorld = glGetUniformLocation(mShaderID, "world");
-	mUniformView = glGetUniformLocation(mShaderID, "view");
-	mUniformProjection = glGetUniformLocation(mShaderID, "projection");
+
 	mUniformCameraPosition = glGetUniformLocation(mShaderID, "cameraPosition");
 
 	mUniformLightColour = glGetUniformLocation(mShaderID, "lightColour");

@@ -3,10 +3,9 @@
 
 SimpleShader::SimpleShader()
 	: mShaderID(0)
-	, mUniformProjection(0)
 	, mUniformWorld(0)
-	, mUniformView(0)
-	, mUniformCameraPosition(0) {
+	, mUniformBlock(0)
+	, mBindingPoint(1) {
 
 }
 
@@ -54,27 +53,16 @@ void SimpleShader::ClearShader() {
 	}
 
 	mUniformWorld = 0;
-	mUniformView = 0;
-	mUniformProjection = 0;
-	mUniformCameraPosition = 0;
+	mUniformBlock = 0;
 }
 
 GLuint SimpleShader::GetWorldLocation() const {
 	return mUniformWorld;
 }
 
-GLuint SimpleShader::GetViewLocation() const {
-	return mUniformView;
+GLuint SimpleShader::GetBindingPoint() const {
+	return mBindingPoint;
 }
-
-GLuint SimpleShader::GetProjectionLocation() const {
-	return mUniformProjection;
-}
-
-GLuint SimpleShader::GetCameraPositionLocation() const {
-	return mUniformCameraPosition;
-}
-
 
 void SimpleShader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	mShaderID = glCreateProgram();
@@ -106,11 +94,10 @@ void SimpleShader::CompileShader(const char* vertexCode, const char* fragmentCod
 		return;
 	}
 
+	mUniformBlock = glGetUniformBlockIndex(mShaderID, "Matrices");
+	glUniformBlockBinding(mShaderID, mUniformBlock, mBindingPoint);
 
 	mUniformWorld = glGetUniformLocation(mShaderID, "world");
-	mUniformView = glGetUniformLocation(mShaderID, "view");
-	mUniformProjection = glGetUniformLocation(mShaderID, "projection");
-	mUniformCameraPosition = glGetUniformLocation(mShaderID, "cameraPosition");
 }
 
 void SimpleShader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {

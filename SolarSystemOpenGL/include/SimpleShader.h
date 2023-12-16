@@ -22,14 +22,9 @@ public:
 	virtual void ClearShader();
 
 	GLuint GetWorldLocation() const;
-	GLuint GetViewLocation() const;
-	GLuint GetProjectionLocation() const;
-	GLuint GetCameraPositionLocation() const;
-
-
+	GLuint GetBindingPoint() const;
 protected:
-	GLuint mShaderID, mUniformProjection, mUniformWorld, mUniformView, mUniformCameraPosition;
-
+	GLuint mShaderID, mUniformWorld, mUniformBlock, mBindingPoint;
 	virtual void CompileShader(const char* vertexCode, const char* fragmentCode);
 	void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
 };

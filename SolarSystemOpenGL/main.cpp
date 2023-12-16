@@ -11,7 +11,7 @@
 
 #include <spdlog/spdlog.h>
 
-
+#include <cassert>
 #include <memory>
 #include <utility>
 #include <fstream>
@@ -37,7 +37,6 @@ static const char* vSimpleShader = "../../Shaders/SimpleShader.vert";
 static const char* fShader = "../../Shaders/shader.frag";
 static const char* fSimpleShader = "../../Shaders/SimpleShader.frag";
 
-
 int main(int argc, char** argv)
 {
 	// Window
@@ -58,13 +57,24 @@ int main(int argc, char** argv)
 	solarSystem->LoadSolarSystem();
 
 
-	unique_ptr<Shader> shader = make_unique<Shader>();
-	shader->CreateFromFiles(vShader, fShader);
-
 	unique_ptr<Shader> simpleShader = make_unique<Shader>();
 	simpleShader->CreateFromFiles(vSimpleShader, fSimpleShader);
 	
-	GLuint uniformProjection = 0, uniformView = 0, uniformWorld = 0, uniformCameraPosition = 0;
+	unique_ptr<Shader> shader = make_unique<Shader>();
+	shader->CreateFromFiles(vShader, fShader);
+	
+	assert(simpleShader->GetBindingPoint() == shader->GetBindingPoint() && "Binding points are not same!");
+
+	GLuint uniformWorld = 0, uniformCameraPosition = 0, UBOMatrices = 0;
+
+	// Generate Uniform Buffer Object
+	glGenBuffers(1, &UBOMatrices);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, UBOMatrices);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(glm::mat4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, simpleShader->GetBindingPoint(), UBOMatrices, 0, 2 * sizeof(glm::mat4));
 
 
 	float angle = 0.f;
@@ -87,27 +97,23 @@ int main(int argc, char** argv)
 
 		simpleShader->UseShader();
 		uniformWorld = simpleShader->GetWorldLocation();
-		uniformView = simpleShader->GetViewLocation();
-		uniformProjection = simpleShader->GetProjectionLocation();
-		uniformCameraPosition = simpleShader->GetCameraPositionLocation();
 
 		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
-		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
-		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
+		glBindBuffer(GL_UNIFORM_BUFFER, UBOMatrices);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glBindBuffer(GL_UNIFORM_BUFFER, UBOMatrices);
+		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera->CalcViewMatrix()));
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
 
 		solarSystem->GetSun()->Update(uniformWorld, delta, solarSystem->GetPeriodToScale());
 		solarSystem->GetSun()->RenderModel();
 
 		shader->UseShader();
 		uniformWorld = shader->GetWorldLocation();
-		uniformView = shader->GetViewLocation();
-		uniformProjection = shader->GetProjectionLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
-
-		projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
-		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera->CalcViewMatrix()));
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
 
 		

@@ -17,6 +17,7 @@ public:
 
 	virtual void ClearShader() override;
 
+	GLuint GetCameraPositionLocation() const;
 
 	GLuint GetLightCoulourLocation() const;
 
@@ -33,7 +34,8 @@ public:
 	void SetPointLight(PointLight* light);
 
 private:
-	GLuint	mUniformLightColour,
+	GLuint	mUniformCameraPosition,
+			mUniformLightColour,
 			mUniformAmbientIntensity, mUniformDiffuseIntensity, 
 			mUniformLightPosition, 
 			mUniformConstant, mUniformLinear, mUniformExponent;
