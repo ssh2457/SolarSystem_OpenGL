@@ -45,7 +45,9 @@ public:
 
 	void Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale);
 
+	const char* GetName() const;
 	float GetMu() const;
+	glm::vec3 GetCurrentPosition() const;
 
 protected:
 	const std::string mFileName;

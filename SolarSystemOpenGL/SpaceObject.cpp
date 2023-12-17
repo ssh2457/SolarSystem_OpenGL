@@ -47,11 +47,24 @@ void SpaceObject::Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat per
 	glUniformMatrix4fv(uniformWorldLocation, 1, GL_FALSE, glm::value_ptr(model));
 }
 
+const char* SpaceObject::GetName() const {
+	return mName;
+}
+
 float SpaceObject::GetMu() const {
 	return mMu;
 }
 
+glm::vec3 SpaceObject::GetCurrentPosition() const {
+	return mCurrentPosition;
+}
+
 glm::mat4 SpaceObject::Translate(glm::mat4& model) {
+	GLfloat scale = glm::length(mCurrentPosition) / EARTH_SUN_DISTANCE;
+	if (scale > 1.f) {
+		GLfloat value = glm::log(scale) + 1;
+		return glm::translate(model, mCurrentPosition * (DISTANCE_SCALE / value) / EARTH_SUN_DISTANCE);
+	}
 	return glm::translate(model, (mCurrentPosition * DISTANCE_SCALE) / EARTH_SUN_DISTANCE);
 }
 

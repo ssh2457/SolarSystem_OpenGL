@@ -13,20 +13,11 @@ typedef struct RevolutionObjectParams {
 class RevolutionObject : public SpaceObject {
 public:
 	RevolutionObject() = delete;
-	/*
-	RevolutionObject(const std::string& fileName, const char* name,
-					glm::vec3& positionAtPeriapsis, glm::vec3& velocityAtPeriapsis,
-					float radius, float mass,
-					float scale, 
-					float rotationPeriod,
-					float eccentricity,
-					float centralBodyMu);
-					*/
 	RevolutionObject(revolutionObjectParams_t& revolutionObjectParams);
 	virtual ~RevolutionObject() = default;
 
 	void CalcRevolutionPeriod(float centralBodyMu);
-	void Revolve(float centralBodyMu, GLfloat delta, GLfloat periodToScale);
+	void Revolve(float centralBodyMu, GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos);
 	float GetRevolutionPeriod() const;
 
 private:

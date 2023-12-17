@@ -124,6 +124,8 @@ int main(int argc, char** argv)
 		mainWindow->SwapBuffers();
 	}
 
+	// Delete Uniform Buffer Object
+	glDeleteBuffers(1, &UBOMatrices);
 
 	return 0;
 }

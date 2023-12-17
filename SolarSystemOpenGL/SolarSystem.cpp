@@ -110,6 +110,72 @@ void SolarSystem::LoadSolarSystem() {
 
 	mPlanets.push_back(std::make_unique<RevolutionObject>(jupiterParams));
 
+	revolutionObjectParams_t saturnParams;
+	memset(&saturnParams, 0, sizeof(revolutionObjectParams_t));
+	saturnParams.base.fileName = "../../Models/Saturn/Saturn.obj";
+	saturnParams.base.name = "Saturn";
+	saturnParams.base.initialPosition = glm::vec3(1357.554e6f, 0.f, 0.f);
+	saturnParams.base.initialVelocity = glm::vec3(0.f, 0.f, -10.14f);
+	saturnParams.base.radius = 58232.f;
+	saturnParams.base.mass = 568.32e24f;
+	saturnParams.base.scale = 1.7f;
+	saturnParams.base.rotationPeriod = 38361.6f;
+	saturnParams.base.inclination = glm::radians(26.73f);
+	saturnParams.eccentricity = 0.0520f;
+	saturnParams.centralBodyMu = mSun->GetMu();
+
+	mPlanets.push_back(std::make_unique<RevolutionObject>(saturnParams));
+
+	revolutionObjectParams_t uranosParams;
+	memset(&uranosParams, 0, sizeof(revolutionObjectParams_t));
+	uranosParams.base.fileName = "../../Models/Uranos/Uranos.obj";
+	uranosParams.base.name = "Uranos";
+	uranosParams.base.initialPosition = glm::vec3(2732.696e6f, 0.f, 0.f);
+	uranosParams.base.initialVelocity = glm::vec3(0.f, 0.f, -7.13f);
+	uranosParams.base.radius = 25362.f;
+	uranosParams.base.mass = 86.811e24f;
+	uranosParams.base.scale = 1.4f;
+	uranosParams.base.rotationPeriod = 62064.f;
+	uranosParams.base.inclination = glm::radians(97.77f);
+	uranosParams.eccentricity = 0.0469f;
+	uranosParams.centralBodyMu = mSun->GetMu();
+
+	mPlanets.push_back(std::make_unique<RevolutionObject>(uranosParams));
+
+	revolutionObjectParams_t neptuneParams;
+	memset(&neptuneParams, 0, sizeof(revolutionObjectParams_t));
+	neptuneParams.base.fileName = "../../Models/Neptune/Neptune.obj";
+	neptuneParams.base.name = "Neptune";
+	neptuneParams.base.initialPosition = glm::vec3(4471.05e6f, 0.f, 0.f);
+	neptuneParams.base.initialVelocity = glm::vec3(0.f, 0.f, -5.47f);
+	neptuneParams.base.radius = 24622.f;
+	neptuneParams.base.mass = 102.409e24f;
+	neptuneParams.base.scale = 1.5f;
+	neptuneParams.base.rotationPeriod = 57996.f;
+	neptuneParams.base.inclination = glm::radians(23.32f);
+	neptuneParams.eccentricity = 0.0097f;
+	neptuneParams.centralBodyMu = mSun->GetMu();
+
+	mPlanets.push_back(std::make_unique<RevolutionObject>(neptuneParams));
+
+
+	revolutionObjectParams_t moonParams;
+	memset(&moonParams, 0, sizeof(revolutionObjectParams_t));
+	moonParams.base.fileName = "../../Models/Moon/Moon.obj";
+	moonParams.base.name = "Moon";
+	moonParams.base.initialPosition = glm::vec3(0.3633e6f, 0.f, 0.f);
+	moonParams.base.initialVelocity = glm::vec3(0.f, 0.f, -1.082);
+	moonParams.base.radius = 1738.1;
+	moonParams.base.mass = 0.07346e24f;
+	moonParams.base.scale = 0.2725f;
+	moonParams.base.rotationPeriod = 2360592.f;
+	moonParams.base.inclination = glm::radians(5.145f);
+	moonParams.eccentricity = 0.0549f;
+	moonParams.centralBodyMu = mPlanets[0]->GetMu();
+
+	mPlanets.push_back(std::make_unique<RevolutionObject>(moonParams));
+
+
 	for (auto& planet : mPlanets) {
 		planet->LoadModel(planet->GetFilePath());
 	}
@@ -121,7 +187,12 @@ void SolarSystem::Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delt
 	//mSun->RenderModel();
 
 	for (auto& planet : mPlanets) {
-		planet->Revolve(mSun->GetMu(), delta, mPeriodToScale);
+		if (std::string(planet->GetName()) == "Moon") {
+			planet->Revolve(mPlanets[0]->GetMu(), delta, mPeriodToScale, mPlanets[0]->GetCurrentPosition());
+		}
+		else {
+			planet->Revolve(mSun->GetMu(), delta, mPeriodToScale, mSun->GetCurrentPosition());
+		}
 		planet->Update(uniformWorldLocation, delta, mPeriodToScale);
 		planet->RenderModel();
 	}
