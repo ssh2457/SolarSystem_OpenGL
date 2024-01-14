@@ -22,7 +22,8 @@ public:
 	static std::unique_ptr<SolarSystem> GetInstance();
 
 	void LoadSolarSystem();
-	void Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta);
+	void UpdateSun(GLuint uniformWorld, GLfloat delta);
+	void UpdatePlanets(Shader* shader, GLuint uniformWorldLocation, GLfloat delta);
 
 
 	// TEST FUNCTIONS

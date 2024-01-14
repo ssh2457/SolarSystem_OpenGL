@@ -121,6 +121,7 @@ void SolarSystem::LoadSolarSystem() {
 	saturnParams.base.scale = 1.7f;
 	saturnParams.base.rotationPeriod = 38361.6f;
 	saturnParams.base.inclination = glm::radians(26.73f);
+	//saturnParams.base.inclination = glm::radians(0.f);
 	saturnParams.eccentricity = 0.0520f;
 	saturnParams.centralBodyMu = mSun->GetMu();
 
@@ -181,10 +182,13 @@ void SolarSystem::LoadSolarSystem() {
 	}
 }
 
-void SolarSystem::Tick(Shader* shader, GLuint uniformWorldLocation, GLfloat delta) {
+void SolarSystem::UpdateSun(GLuint uniformWorld, GLfloat delta) {
+	mSun->Update(uniformWorld, delta, mPeriodToScale);
+	mSun->RenderModel();
+}
+
+void SolarSystem::UpdatePlanets(Shader* shader, GLuint uniformWorldLocation, GLfloat delta) {
 	shader->SetPointLight(mSun->GetPointLight());
-	//mSun->Update(uniformWorldLocation, delta, mPeriodToScale);
-	//mSun->RenderModel();
 
 	for (auto& planet : mPlanets) {
 		if (std::string(planet->GetName()) == "Moon") {

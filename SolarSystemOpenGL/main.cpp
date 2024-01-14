@@ -11,6 +11,8 @@
 
 #include <spdlog/spdlog.h>
 
+#include <iostream>
+
 #include <cassert>
 #include <memory>
 #include <utility>
@@ -37,8 +39,15 @@ static const char* vSimpleShader = "../../Shaders/SimpleShader.vert";
 static const char* fShader = "../../Shaders/shader.frag";
 static const char* fSimpleShader = "../../Shaders/SimpleShader.frag";
 
+
 int main(int argc, char** argv)
 {
+
+	auto glVersion = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
+	SPDLOG_INFO("OpenGL context version: {}", glVersion);
+
+	SPDLOG_INFO("Program start");
+
 	// Window
 	constexpr int WIDTH = 1152;
 	constexpr int HEIGHT = 864;
@@ -107,9 +116,8 @@ int main(int argc, char** argv)
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera->CalcViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+		solarSystem->UpdateSun(uniformWorld, delta);
 
-		solarSystem->GetSun()->Update(uniformWorld, delta, solarSystem->GetPeriodToScale());
-		solarSystem->GetSun()->RenderModel();
 
 		shader->UseShader();
 		uniformWorld = shader->GetWorldLocation();
@@ -118,7 +126,7 @@ int main(int argc, char** argv)
 
 		
 		// Draw object
-		solarSystem->Tick(shader.get(), uniformWorld, delta);
+		solarSystem->UpdatePlanets(shader.get(), uniformWorld, delta);
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();

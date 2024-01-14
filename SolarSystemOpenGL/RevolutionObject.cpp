@@ -31,11 +31,16 @@ void RevolutionObject::Revolve(float centralBodyMu, GLfloat delta, GLfloat perio
 	float radius = mSemiMajorLength * (1 - mEccentricity * mEccentricity) / (1 + mEccentricity * glm::cos(theta));
 	mCurrentPosition = nearFociPos + glm::rotate(glm::normalize(mInitialPosition), theta, glm::vec3(0.f, 1.f, 0.f)) * radius;
 
+	
 	/*
-	float velocity = glm::sqrt(centralBodyMu * ((2.f / radius) - (1.f / mSemiMajorLength)));
-	SPDLOG_INFO("radius: {}", radius);
-	SPDLOG_INFO("position: {}, {}", mCurrentPosition.x, mCurrentPosition.z);
-	SPDLOG_INFO("velocity: {}", velocity);
+	if (std::string(mName) == "Moon" || std::string(mName) == "Earth") {
+		float velocity = glm::sqrt(centralBodyMu * ((2.f / radius) - (1.f / mSemiMajorLength)));
+		SPDLOG_INFO("name: {}", mName);
+		SPDLOG_INFO("radius: {}", radius);
+		SPDLOG_INFO("position: {}, {}", mCurrentPosition.x, mCurrentPosition.z);
+		SPDLOG_INFO("length: {}", glm::sqrt(mCurrentPosition.x * mCurrentPosition.x + mCurrentPosition.z * mCurrentPosition.z));
+		SPDLOG_INFO("velocity: {}", velocity);
+	}
 	*/
 }
 

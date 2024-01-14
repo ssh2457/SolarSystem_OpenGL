@@ -62,11 +62,11 @@ protected:
 	float mMu;
 	float mInclination;
 
-	glm::vec3 mAxis;
 	float mAccumulatedRotationTime;
 	float mRotationPeriod;
 
 	glm::mat4 Translate(glm::mat4& model);
 	glm::mat4 Rotate(glm::mat4& model, GLfloat delta, GLfloat periodToScale);
 	glm::mat4 Scale(glm::mat4& model);
+	glm::mat4 Incline(glm::mat4& model);
 };
