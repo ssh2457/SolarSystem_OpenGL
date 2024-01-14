@@ -14,7 +14,7 @@ std::unique_ptr<SolarSystem> SolarSystem::GetInstance() {
 void SolarSystem::LoadSolarSystem() {
 	starParams_t sunParams;
 	memset(&sunParams, 0, sizeof(starParams_t));
-	sunParams.base.fileName = "../../Models/Sun/Sun.obj";
+	sunParams.base.fileName = "../../../../Blender models/Sun/Sun.obj";
 	sunParams.base.name = "Sun";
 	sunParams.base.initialPosition = glm::vec3(0.f, 0.f, 0.f);
 	sunParams.base.initialVelocity = glm::vec3(0.f, 0.f, 0.f);
@@ -29,7 +29,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t earthParams;
 	memset(&earthParams, 0, sizeof(revolutionObjectParams_t));
-	earthParams.base.fileName = "../../Models/Earth/Earth.obj";
+	earthParams.base.fileName = "../../../../Blender models/Earth/Earth.obj";
 	earthParams.base.name = "Earth";
 	earthParams.base.initialPosition = glm::vec3(EARTH_SUN_DISTANCE, 0.f, 0.f);
 	earthParams.base.initialVelocity = glm::vec3(0.f, 0.f, -30.29f);
@@ -46,7 +46,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t mercuryParams;
 	memset(&mercuryParams, 0, sizeof(revolutionObjectParams_t));
-	mercuryParams.base.fileName = "../../Models/Mercury/Mercury.obj";
+	mercuryParams.base.fileName = "../../../../Blender models/Mercury/Mercury.obj";
 	mercuryParams.base.name = "Mercury";
 	mercuryParams.base.initialPosition = glm::vec3(46e6f, 0.f, 0.f);
 	mercuryParams.base.initialVelocity = glm::vec3(0.f, 0.f, -58.97f);
@@ -62,7 +62,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t venusParams;
 	memset(&venusParams, 0, sizeof(revolutionObjectParams_t));
-	venusParams.base.fileName = "../../Models/Venus/Venus.obj";
+	venusParams.base.fileName = "../../../../Blender models/Venus/Venus.obj";
 	venusParams.base.name = "Venus";
 	venusParams.base.initialPosition = glm::vec3(107.48e6f, 0.f, 0.f);
 	venusParams.base.initialVelocity = glm::vec3(0.f, 0.f, -32.26f);
@@ -80,7 +80,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t marsParams;
 	memset(&marsParams, 0, sizeof(revolutionObjectParams_t));
-	marsParams.base.fileName = "../../Models/Mars/Mars.obj";
+	marsParams.base.fileName = "../../../../Blender models/Mars/Mars.obj";
 	marsParams.base.name = "Mars";
 	marsParams.base.initialPosition = glm::vec3(206.65e6f, 0.f, 0.f);
 	marsParams.base.initialVelocity = glm::vec3(0.f, 0.f, -26.5f);
@@ -96,7 +96,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t jupiterParams;
 	memset(&jupiterParams, 0, sizeof(revolutionObjectParams_t));
-	jupiterParams.base.fileName = "../../Models/Jupiter/Jupiter.obj";
+	jupiterParams.base.fileName = "../../../../Blender models/Jupiter/Jupiter.obj";
 	jupiterParams.base.name = "Jupiter";
 	jupiterParams.base.initialPosition = glm::vec3(740.595e6f, 0.f, 0.f);
 	jupiterParams.base.initialVelocity = glm::vec3(0.f, 0.f, -13.72f);
@@ -112,7 +112,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t saturnParams;
 	memset(&saturnParams, 0, sizeof(revolutionObjectParams_t));
-	saturnParams.base.fileName = "../../Models/Saturn/Saturn.obj";
+	saturnParams.base.fileName = "../../../../Blender models/Saturn/Saturn.obj";
 	saturnParams.base.name = "Saturn";
 	saturnParams.base.initialPosition = glm::vec3(1357.554e6f, 0.f, 0.f);
 	saturnParams.base.initialVelocity = glm::vec3(0.f, 0.f, -10.14f);
@@ -129,7 +129,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t uranosParams;
 	memset(&uranosParams, 0, sizeof(revolutionObjectParams_t));
-	uranosParams.base.fileName = "../../Models/Uranos/Uranos.obj";
+	uranosParams.base.fileName = "../../../../Blender models/Uranos/Uranos.obj";
 	uranosParams.base.name = "Uranos";
 	uranosParams.base.initialPosition = glm::vec3(2732.696e6f, 0.f, 0.f);
 	uranosParams.base.initialVelocity = glm::vec3(0.f, 0.f, -7.13f);
@@ -145,7 +145,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t neptuneParams;
 	memset(&neptuneParams, 0, sizeof(revolutionObjectParams_t));
-	neptuneParams.base.fileName = "../../Models/Neptune/Neptune.obj";
+	neptuneParams.base.fileName = "../../../../Blender models/Neptune/Neptune.obj";
 	neptuneParams.base.name = "Neptune";
 	neptuneParams.base.initialPosition = glm::vec3(4471.05e6f, 0.f, 0.f);
 	neptuneParams.base.initialVelocity = glm::vec3(0.f, 0.f, -5.47f);
@@ -162,7 +162,7 @@ void SolarSystem::LoadSolarSystem() {
 
 	revolutionObjectParams_t moonParams;
 	memset(&moonParams, 0, sizeof(revolutionObjectParams_t));
-	moonParams.base.fileName = "../../Models/Moon/Moon.obj";
+	moonParams.base.fileName = "../../../../Blender models/Moon/Moon.obj";
 	moonParams.base.name = "Moon";
 	moonParams.base.initialPosition = glm::vec3(0.3633e6f, 0.f, 0.f);
 	moonParams.base.initialVelocity = glm::vec3(0.f, 0.f, -1.082);
@@ -192,10 +192,10 @@ void SolarSystem::UpdatePlanets(Shader* shader, GLuint uniformWorldLocation, GLf
 
 	for (auto& planet : mPlanets) {
 		if (std::string(planet->GetName()) == "Moon") {
-			planet->Revolve(mPlanets[0]->GetMu(), delta, mPeriodToScale, mPlanets[0]->GetCurrentPosition());
+			planet->Revolve(delta, mPeriodToScale, mPlanets[0]->GetCurrentPosition());
 		}
 		else {
-			planet->Revolve(mSun->GetMu(), delta, mPeriodToScale, mSun->GetCurrentPosition());
+			planet->Revolve(delta, mPeriodToScale, mSun->GetCurrentPosition());
 		}
 		planet->Update(uniformWorldLocation, delta, mPeriodToScale);
 		planet->RenderModel();

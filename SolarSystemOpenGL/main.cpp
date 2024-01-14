@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 		GLfloat current = glfwGetTime(); // SDL_GetPerformanceCounter();
 		delta = current - last; // (current - lastTime)*1000/SDL_GetPerformanceFrequency();
 		last = current;
-		SPDLOG_INFO("delta: {}secs", delta);
+		// SPDLOG_INFO("delta: {}secs", delta);
 
 		// Get + Handle User Input
 		glfwPollEvents();

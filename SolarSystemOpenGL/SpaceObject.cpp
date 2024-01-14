@@ -27,8 +27,7 @@ SpaceObject::SpaceObject(const std::string& fileName, const char* name,
 }
 
 SpaceObject::~SpaceObject() {
-	delete[] mName; 
-	mName = nullptr;
+	delete[] mName; mName = nullptr;
 }
 
 const std::string& SpaceObject::GetFilePath() const {
@@ -40,10 +39,8 @@ void SpaceObject::Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat per
 	model = Translate(model);
 	model = Incline(model);
 	model = Rotate(model, delta, periodToScale);
-	
 	model = Scale(model);
 	
-
 	glUniformMatrix4fv(uniformWorldLocation, 1, GL_FALSE, glm::value_ptr(model));
 }
 
