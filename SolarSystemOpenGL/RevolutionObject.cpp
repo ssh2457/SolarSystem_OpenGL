@@ -23,7 +23,7 @@ void RevolutionObject::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& 
 		mAccumulatedRevolutionTime -= mRevolutionPeriod;
 	}
 
-	float n = 2.f * glm::pi<float>() / mRevolutionPeriod;
+	float n = 2.f * glm::pi<float>() / mRevolutionPeriod; // n = mean angular rate
 	float M = n * mAccumulatedRevolutionTime; // M (Mean anomaly) = n * t
 	float E = CalcEccentricAnomaly(M); // E = Eccentric anomaly
 	float theta = 2.f * glm::atan(glm::sqrt((1 + mEccentricity) / (1 - mEccentricity)) * glm::tan(E / 2.f));
