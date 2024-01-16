@@ -10,13 +10,15 @@ add_executable (${CMAKE_PROJECT_NAME} "main.cpp"
 										"include/Mesh.h" "Mesh.cpp" 
 										"include/Texture.h" "Texture.cpp" 
 										"include/Model.h" "Model.cpp" 
-										"Shader.cpp" "include/Shader.h" 
+										"include/Shader.h" "Shader.cpp" 
 										"include/Camera.h" "Camera.cpp" 
-										"include/SpaceObject.h" "SpaceObject.cpp" 
-										"include/RevolutionObject.h" "RevolutionObject.cpp" 
+										"include/CelestialBody.h" "CelestialBody.cpp" 
+										"include/Planet.h" "Planet.cpp" 
 										"include/Star.h" "Star.cpp" 
 										"include/Light.h" "Light.cpp" 
-										"include/PointLight.h" "PointLight.cpp" "include/SimpleShader.h" "SimpleShader.cpp")
+										"include/PointLight.h" "PointLight.cpp" 
+										"include/SimpleShader.h" "SimpleShader.cpp"
+										"include/Satellite.h" "Satellite.cpp")
 
 
 # TODO: Add tests and install targets if needed.

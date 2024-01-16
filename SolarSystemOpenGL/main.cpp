@@ -87,6 +87,7 @@ int main(int argc, char** argv)
 
 
 	float angle = 0.f;
+	last = glfwGetTime();
 	// Loop until window closed
 	while (!mainWindow->GetShouldClose()) {
 		GLfloat current = glfwGetTime(); // SDL_GetPerformanceCounter();
@@ -126,7 +127,8 @@ int main(int argc, char** argv)
 
 		
 		// Draw object
-		solarSystem->UpdatePlanets(shader.get(), uniformWorld, delta);
+		shader.get()->SetPointLight(solarSystem->GetSun()->GetPointLight());
+		solarSystem->UpdatePlanets(uniformWorld, delta);
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();

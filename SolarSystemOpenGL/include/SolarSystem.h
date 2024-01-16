@@ -7,7 +7,7 @@
 
 #include "Common.h"
 #include "Star.h"
-#include "RevolutionObject.h"
+#include "Planet.h"
 #include "Model.h"
 
 #include "Shader.h"
@@ -23,7 +23,7 @@ public:
 
 	void LoadSolarSystem();
 	void UpdateSun(GLuint uniformWorld, GLfloat delta);
-	void UpdatePlanets(Shader* shader, GLuint uniformWorldLocation, GLfloat delta);
+	void UpdatePlanets(GLuint uniformWorldLocation, GLfloat delta);
 
 
 	// TEST FUNCTIONS
@@ -36,7 +36,7 @@ private:
 	static std::unique_ptr<SolarSystem> instance;
 
 	std::unique_ptr<Star> mSun;
-	std::vector<std::unique_ptr<RevolutionObject>> mPlanets;
+	std::vector<std::unique_ptr<Planet>> mPlanets;
 
 	GLfloat mPeriodToScale;
 };

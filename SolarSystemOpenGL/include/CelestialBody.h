@@ -15,7 +15,7 @@
 
 
 
-typedef struct SpaceObjectParams {
+typedef struct CelestialBodyParams {
 	std::string fileName;
 	const char* name;
 	glm::vec3 initialPosition;
@@ -25,21 +25,21 @@ typedef struct SpaceObjectParams {
 	float scale;
 	float rotationPeriod;
 	float inclination;
-} spaceObjectParams_t;
+	float simulationInitialDistance;
+} celestialBodyParams_t;
 
 
-
-
-class SpaceObject : public Model {
+class CelestialBody : public Model {
 public:
-	SpaceObject() = delete;
-	SpaceObject(const std::string& fileName, const char* name, 
+	CelestialBody() = delete;
+	CelestialBody(const std::string& fileName, const char* name,
 				glm::vec3& initialPosition, glm::vec3& initialVelocity,
 				float radius, float mass,
 				float scale, 
 				float rotationPeriod,
-				float inclination);
-	virtual ~SpaceObject();
+				float inclination,
+				float simulationInitialDistance);
+	virtual ~CelestialBody();
 
 	const std::string& GetFilePath() const;
 
@@ -61,6 +61,7 @@ protected:
 	const float mGravitionalConstant;
 	float mMu;
 	float mInclination;
+	float mSimulationInitialDistance;
 
 	float mAccumulatedRotationTime;
 	float mRotationPeriod;

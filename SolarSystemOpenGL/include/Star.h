@@ -1,13 +1,13 @@
 #pragma once
 
-#include "SpaceObject.h"
+#include "CelestialBody.h"
 #include "PointLight.h"
 
 typedef struct StarParams {
-	spaceObjectParams_t base;
+	celestialBodyParams_t base;
 } starParams_t;
 
-class Star : public SpaceObject {
+class Star : public CelestialBody {
 public:
 	Star() = delete;
 	Star(starParams_t& starParams);

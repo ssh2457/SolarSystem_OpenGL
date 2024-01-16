@@ -2,21 +2,21 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "SpaceObject.h"
+#include "CelestialBody.h"
 
 #include <vector>
 
-typedef struct RevolutionObjectParams {
-	spaceObjectParams_t base;
+typedef struct SatelliteParams {
+	celestialBodyParams_t base;
 	float eccentricity;
 	float centralBodyMu;
-} revolutionObjectParams_t;
+} satelliteParams_t;
 
-class RevolutionObject : public SpaceObject {
+class Satellite : public CelestialBody {
 public:
-	RevolutionObject() = delete;
-	RevolutionObject(revolutionObjectParams_t& revolutionObjectParams);
-	virtual ~RevolutionObject() = default;
+	Satellite() = delete;
+	Satellite(satelliteParams_t& satelliteParams);
+	virtual ~Satellite() = default;
 
 	void Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos);
 	float GetRevolutionPeriod() const;

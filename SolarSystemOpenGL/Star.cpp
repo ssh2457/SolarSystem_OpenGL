@@ -1,10 +1,10 @@
 #include "include/Star.h"
 
 Star::Star(starParams_t& starParams)
-	: SpaceObject(starParams.base.fileName, starParams.base.name,
+	: CelestialBody(starParams.base.fileName, starParams.base.name,
 		starParams.base.initialPosition, starParams.base.initialVelocity,
 		starParams.base.radius, starParams.base.mass,
-		starParams.base.scale, starParams.base.rotationPeriod, starParams.base.inclination)
+		starParams.base.scale, starParams.base.rotationPeriod, starParams.base.inclination, starParams.base.simulationInitialDistance)
 	, mPointLight(nullptr) {
 
 	pointLightParams_t pointLightParams;

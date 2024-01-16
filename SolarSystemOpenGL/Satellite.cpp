@@ -1,26 +1,30 @@
-#include "include/RevolutionObject.h"
+#include "include/Satellite.h"
 
-RevolutionObject::RevolutionObject(revolutionObjectParams_t& revolutionObjectParams)
-	: SpaceObject(revolutionObjectParams.base.fileName, revolutionObjectParams.base.name,
-		revolutionObjectParams.base.initialPosition, revolutionObjectParams.base.initialVelocity,
-		revolutionObjectParams.base.radius, revolutionObjectParams.base.mass,
-		revolutionObjectParams.base.scale, revolutionObjectParams.base.rotationPeriod, revolutionObjectParams.base.inclination)
+Satellite::Satellite(satelliteParams_t& satelliteParams)
+	: CelestialBody(satelliteParams.base.fileName, satelliteParams.base.name,
+		satelliteParams.base.initialPosition, satelliteParams.base.initialVelocity,
+		satelliteParams.base.radius, satelliteParams.base.mass,
+		satelliteParams.base.scale, satelliteParams.base.rotationPeriod, satelliteParams.base.inclination, satelliteParams.base.simulationInitialDistance)
 	, mRevolutionPeriod(0.f)
-	, mEccentricity(revolutionObjectParams.eccentricity)
+	, mEccentricity(satelliteParams.eccentricity)
 	, mAccumulatedRevolutionTime(0.f)
-	, mVelocity(glm::length(revolutionObjectParams.base.initialVelocity))
-	, mSemiMajorLength(glm::length(revolutionObjectParams.base.initialPosition)) 
+	, mVelocity(glm::length(satelliteParams.base.initialVelocity))
+	, mSemiMajorLength(glm::length(satelliteParams.base.initialPosition))
 {
-	CalcRevolutionPeriod(revolutionObjectParams.centralBodyMu);
+	CalcRevolutionPeriod(satelliteParams.centralBodyMu);
 	mTrajectoryPts.reserve(360);
 }
 
-void RevolutionObject::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos) 
+void Satellite::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos)
 {
 	float revolutionProportion = mRevolutionPeriod / periodToScale;
 	mAccumulatedRevolutionTime += mRevolutionPeriod * delta / (revolutionProportion * EARTH_REVOLUTION_SIMULATION_PERIOD);
 	if (mAccumulatedRevolutionTime > mRevolutionPeriod) {
 		mAccumulatedRevolutionTime -= mRevolutionPeriod;
+	}
+
+	if (std::string(mName) == "Moon") {
+		SPDLOG_INFO("Moon");
 	}
 
 	float n = 2.f * glm::pi<float>() / mRevolutionPeriod; // n = mean angular rate
@@ -31,12 +35,12 @@ void RevolutionObject::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& 
 	mCurrentPosition = nearFociPos + glm::rotate(glm::normalize(mInitialPosition), theta, glm::vec3(0.f, 1.f, 0.f)) * radius;
 }
 
-float RevolutionObject::GetRevolutionPeriod() const 
+float Satellite::GetRevolutionPeriod() const
 {
 	return mRevolutionPeriod;
 }
 
-void RevolutionObject::CalcTrajectory(glm::vec3& nearFociPos)
+void Satellite::CalcTrajectory(glm::vec3& nearFociPos)
 {
 	mTrajectoryPts.clear();
 
@@ -54,7 +58,7 @@ void RevolutionObject::CalcTrajectory(glm::vec3& nearFociPos)
 	}
 }
 
-void RevolutionObject::CalcRevolutionPeriod(float centralBodyMu)
+void Satellite::CalcRevolutionPeriod(float centralBodyMu)
 {
 	mRevolutionPeriod = 2.f * glm::pi<float>() * glm::sqrt(glm::pow(mSemiMajorLength, 3) / centralBodyMu);
 }
@@ -64,7 +68,7 @@ void RevolutionObject::CalcRevolutionPeriod(float centralBodyMu)
 /// </summary>
 /// <param name="meanAnomaly"></param>
 /// <returns></returns>
-float RevolutionObject::CalcEccentricAnomaly(float meanAnomaly) 
+float Satellite::CalcEccentricAnomaly(float meanAnomaly)
 {
 	constexpr float TOLERANCE = 1e-4;
 	float E = meanAnomaly;
