@@ -50,14 +50,14 @@ void SolarSystem::LoadSolarSystem() {
 	memset(&moonParams, 0, sizeof(planetParams_t));
 	moonParams.base.fileName = "../../../../Blender models/Moon/Moon.obj";
 	moonParams.base.name = "Moon";
-	moonParams.base.initialPosition = glm::vec3(0.3633e6f, 0.f, 0.f);
+	moonParams.base.initialPosition = glm::vec3(glm::length(earthParams.base.base.initialPosition) + 0.3633e6f, 0.f, 0.f);
 	moonParams.base.initialVelocity = glm::vec3(0.f, 0.f, -1.082);
 	moonParams.base.radius = 1738.1;
 	moonParams.base.mass = 0.07346e24f;
 	moonParams.base.scale = 0.11f;
 	moonParams.base.rotationPeriod = 2360592.f;
 	moonParams.base.inclination = glm::radians(5.145f);
-	moonParams.base.simulationInitialDistance = 17.f;
+	moonParams.base.simulationInitialDistance = 5.f;
 	moonParams.eccentricity = 0.0549f;
 	moonParams.centralBodyMu = mPlanets[0]->GetMu();
 

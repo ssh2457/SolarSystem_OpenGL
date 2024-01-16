@@ -64,18 +64,21 @@ glm::mat4 CelestialBody::Translate(glm::mat4& model) {
 	if (glm::length(mInitialPosition) < std::numeric_limits<float>::epsilon()) {
 		return glm::translate(model, mInitialPosition);
 	}
+	float ratio = glm::length(mCurrentPosition) / glm::length(mInitialPosition);
+	glm::vec3 unitVec = glm::normalize(mCurrentPosition);
+	glm::vec3 simulPos = unitVec * ratio * mSimulationInitialDistance;
 
 	if (std::string(mName) == "Moon") {
-		SPDLOG_INFO("Moon's position(x, y, z): {}, {}, {}", mCurrentPosition.x, mCurrentPosition.y, mCurrentPosition.z);
+		SPDLOG_INFO("Moon's real position(x, y, z): {}, {}, {}", mCurrentPosition.x, mCurrentPosition.y, mCurrentPosition.z);
+		SPDLOG_INFO("Moon's simulation position(x, y, z): {}, {}, {}", simulPos.x, simulPos.y, simulPos.z);
 	}
 
 	if (std::string(mName) == "Earth") {
-		SPDLOG_INFO("Earth's position(x, y, z): {}, {}, {}", mCurrentPosition.x, mCurrentPosition.y, mCurrentPosition.z);
+		SPDLOG_INFO("Earth's real position(x, y, z): {}, {}, {}", mCurrentPosition.x, mCurrentPosition.y, mCurrentPosition.z);
+		SPDLOG_INFO("Earth's simulation position(x, y, z): {}, {}, {}", simulPos.x, simulPos.y, simulPos.z);
 	}
 
-	float ratio = glm::length(mCurrentPosition) / glm::length(mInitialPosition);
-	glm::vec3 unitVec = glm::normalize(mCurrentPosition);
-	return glm::translate(model, unitVec * ratio * mSimulationInitialDistance);
+	return glm::translate(model, simulPos);
 }
 
 glm::mat4 CelestialBody::Rotate(glm::mat4& model, GLfloat delta, GLfloat periodToScale) {
