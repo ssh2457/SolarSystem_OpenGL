@@ -9,6 +9,7 @@
 typedef struct SatelliteParams {
 	celestialBodyParams_t base;
 	float eccentricity;
+	float semiMajorLength;
 	float centralBodyMu;
 } satelliteParams_t;
 

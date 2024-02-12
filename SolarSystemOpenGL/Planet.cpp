@@ -18,11 +18,11 @@ void Planet::LoadSatelliteModels()
 	}
 }
 
-void Planet::UpdateSatellites(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale)
+void Planet::UpdateSatellites(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale, Planet* governingPlanet)
 {
 	for (auto& satellite : satellites) {
 		satellite->Revolve(delta, periodToScale, GetCurrentPosition());
-		satellite->Update(uniformWorldLocation, delta, periodToScale);
+		satellite->Update(uniformWorldLocation, delta, periodToScale, governingPlanet);
 		satellite->RenderModel();
 	}
 }

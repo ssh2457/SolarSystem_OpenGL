@@ -43,11 +43,12 @@ public:
 
 	const std::string& GetFilePath() const;
 
-	void Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale);
+	void Update(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale, CelestialBody* governingObj = nullptr);
 
 	const char* GetName() const;
 	float GetMu() const;
 	glm::vec3 GetCurrentPosition() const;
+	glm::vec3 GetInitialPosition() const;
 
 protected:
 	const std::string mFileName;
@@ -62,11 +63,13 @@ protected:
 	float mMu;
 	float mInclination;
 	float mSimulationInitialDistance;
+	glm::vec3 mSimulationPosition;
 
 	float mAccumulatedRotationTime;
 	float mRotationPeriod;
 
 	glm::mat4 Translate(glm::mat4& model);
+	glm::mat4 TranslateFromGoverningObj(glm::mat4& model, CelestialBody* governingObj = nullptr);
 	glm::mat4 Rotate(glm::mat4& model, GLfloat delta, GLfloat periodToScale);
 	glm::mat4 Scale(glm::mat4& model);
 	glm::mat4 Incline(glm::mat4& model);

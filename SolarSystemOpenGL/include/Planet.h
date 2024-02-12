@@ -19,7 +19,7 @@ public:
 
 	void AddSatellite(satelliteParams_t& satellite);
 	void LoadSatelliteModels();
-	void UpdateSatellites(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale);
+	void UpdateSatellites(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale, Planet* governingPlanet);
 private:
 	std::vector<std::unique_ptr<Satellite>> satellites;
 };

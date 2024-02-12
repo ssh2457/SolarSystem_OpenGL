@@ -41,6 +41,7 @@ void SolarSystem::LoadSolarSystem() {
 	earthParams.base.base.inclination = glm::radians(23.44f);
 	earthParams.base.base.simulationInitialDistance = 15.f;
 	earthParams.base.eccentricity = 0.0167f;
+	earthParams.base.semiMajorLength = EARTH_SUN_DISTANCE;
 	earthParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(earthParams));
@@ -57,8 +58,9 @@ void SolarSystem::LoadSolarSystem() {
 	moonParams.base.scale = 0.11f;
 	moonParams.base.rotationPeriod = 2360592.f;
 	moonParams.base.inclination = glm::radians(5.145f);
-	moonParams.base.simulationInitialDistance = 5.f;
+	moonParams.base.simulationInitialDistance = earthParams.base.base.simulationInitialDistance + 1.5f;
 	moonParams.eccentricity = 0.0549f;
+	moonParams.semiMajorLength = 0.3633e6f;
 	moonParams.centralBodyMu = mPlanets[0]->GetMu();
 
 	mPlanets[0]->AddSatellite(moonParams);
@@ -76,6 +78,7 @@ void SolarSystem::LoadSolarSystem() {
 	mercuryParams.base.base.scale = 0.17;
 	mercuryParams.base.base.simulationInitialDistance = 5.f;
 	mercuryParams.base.eccentricity = 0.2056;
+	mercuryParams.base.semiMajorLength = 46e6f;
 	mercuryParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(mercuryParams));
@@ -93,6 +96,7 @@ void SolarSystem::LoadSolarSystem() {
 	venusParams.base.base.inclination = glm::radians(177.36f);
 	venusParams.base.base.simulationInitialDistance = 10.f;
 	venusParams.base.eccentricity = 0.0068f;
+	venusParams.base.semiMajorLength = 107.48e6f;
 	venusParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(venusParams));
@@ -112,6 +116,7 @@ void SolarSystem::LoadSolarSystem() {
 	marsParams.base.base.inclination = glm::radians(25.19f);
 	marsParams.base.base.simulationInitialDistance = 20.f;
 	marsParams.base.eccentricity = 0.0935f;
+	marsParams.base.semiMajorLength = 206.65e6f;
 	marsParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(marsParams));
@@ -129,6 +134,7 @@ void SolarSystem::LoadSolarSystem() {
 	jupiterParams.base.base.inclination = glm::radians(3.13f);
 	jupiterParams.base.base.simulationInitialDistance = 30.f;
 	jupiterParams.base.eccentricity = 0.0487f;
+	jupiterParams.base.semiMajorLength = 740.595e6f;
 	jupiterParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(jupiterParams));
@@ -146,6 +152,7 @@ void SolarSystem::LoadSolarSystem() {
 	saturnParams.base.base.inclination = glm::radians(26.73f);
 	saturnParams.base.base.simulationInitialDistance = 40.f;
 	saturnParams.base.eccentricity = 0.0520f;
+	saturnParams.base.semiMajorLength = 1357.554e6f;
 	saturnParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(saturnParams));
@@ -163,6 +170,7 @@ void SolarSystem::LoadSolarSystem() {
 	uranosParams.base.base.inclination = glm::radians(97.77f);
 	uranosParams.base.base.simulationInitialDistance = 50.f;
 	uranosParams.base.eccentricity = 0.0469f;
+	uranosParams.base.semiMajorLength = 2732.696e6f;
 	uranosParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(uranosParams));
@@ -180,6 +188,7 @@ void SolarSystem::LoadSolarSystem() {
 	neptuneParams.base.base.inclination = glm::radians(23.32f);
 	neptuneParams.base.base.simulationInitialDistance = 60.f;
 	neptuneParams.base.eccentricity = 0.0097f;
+	neptuneParams.base.semiMajorLength = 4471.05e6f;
 	neptuneParams.base.centralBodyMu = mSun->GetMu();
 
 	mPlanets.push_back(std::make_unique<Planet>(neptuneParams));
@@ -201,8 +210,7 @@ void SolarSystem::UpdatePlanets(GLuint uniformWorldLocation, GLfloat delta) {
 		planet->Revolve(delta, mPeriodToScale, mSun->GetCurrentPosition());
 		planet->Update(uniformWorldLocation, delta, mPeriodToScale);
 		planet->RenderModel();
-
-		planet->UpdateSatellites(uniformWorldLocation, delta, mPeriodToScale);
+		planet->UpdateSatellites(uniformWorldLocation, delta, mPeriodToScale, planet.get());
 	}
 }
 

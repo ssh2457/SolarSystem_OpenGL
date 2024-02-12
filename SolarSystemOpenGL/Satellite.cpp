@@ -9,7 +9,7 @@ Satellite::Satellite(satelliteParams_t& satelliteParams)
 	, mEccentricity(satelliteParams.eccentricity)
 	, mAccumulatedRevolutionTime(0.f)
 	, mVelocity(glm::length(satelliteParams.base.initialVelocity))
-	, mSemiMajorLength(glm::length(satelliteParams.base.initialPosition))
+	, mSemiMajorLength(satelliteParams.semiMajorLength)
 {
 	CalcRevolutionPeriod(satelliteParams.centralBodyMu);
 	mTrajectoryPts.reserve(360);
@@ -23,16 +23,19 @@ void Satellite::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFoc
 		mAccumulatedRevolutionTime -= mRevolutionPeriod;
 	}
 
-	if (std::string(mName) == "Moon") {
-		SPDLOG_INFO("Moon");
-	}
-
 	float n = 2.f * glm::pi<float>() / mRevolutionPeriod; // n = mean angular rate
 	float M = n * mAccumulatedRevolutionTime; // M (Mean anomaly) = n * t
 	float E = CalcEccentricAnomaly(M); // E = Eccentric anomaly
 	float theta = 2.f * glm::atan(glm::sqrt((1 + mEccentricity) / (1 - mEccentricity)) * glm::tan(E / 2.f));
 	float radius = mSemiMajorLength * (1 - mEccentricity * mEccentricity) / (1 + mEccentricity * glm::cos(theta));
 	mCurrentPosition = nearFociPos + glm::rotate(glm::normalize(mInitialPosition), theta, glm::vec3(0.f, 1.f, 0.f)) * radius;
+
+	/*
+	if (std::string(mName) == "Moon") {
+		glm::vec3 test = mCurrentPosition - nearFociPos;
+		SPDLOG_INFO("Moon's relative position[x, y, z]: [{}, {}, {}]", test.x, test.y, test.z);
+	}
+	*/
 }
 
 float Satellite::GetRevolutionPeriod() const
