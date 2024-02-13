@@ -2,22 +2,19 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
-#include "CelestialBody.h"
+#include "RevolutionableBody.h"
 #include "Satellite.h"
 
 #include <vector>
 
-typedef struct PlanetParams {
-	satelliteParams_t base;
-} planetParams_t;
 
-class Planet : public Satellite {
+class Planet : public RevolutionableBody {
 public:
 	Planet() = delete;
-	Planet(planetParams_t& planetParams);
+	Planet(revolutionableBodyParams_t& planetParams);
 	virtual ~Planet() = default;
 
-	void AddSatellite(satelliteParams_t& satellite);
+	void AddSatellite(std::unique_ptr<Satellite> satellite);
 	void LoadSatelliteModels();
 	void UpdateSatellites(GLuint uniformWorldLocation, GLfloat delta, GLfloat periodToScale, Planet* governingPlanet);
 private:

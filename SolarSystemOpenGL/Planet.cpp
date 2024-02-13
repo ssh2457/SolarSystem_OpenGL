@@ -1,14 +1,14 @@
 #include "include/Planet.h"
 
-Planet::Planet(planetParams_t& planetParams)
-	: Satellite(planetParams.base)
+Planet::Planet(revolutionableBodyParams_t& planetParams)
+	: RevolutionableBody(planetParams)
 {
 
 }
 
-void Planet::AddSatellite(satelliteParams_t& satellite)
+void Planet::AddSatellite(std::unique_ptr<Satellite> satellite)
 {
-	satellites.push_back(std::make_unique<Satellite>(satellite));
+	satellites.push_back(std::move(satellite));
 }
 
 void Planet::LoadSatelliteModels()

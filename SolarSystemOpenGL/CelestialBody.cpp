@@ -83,9 +83,11 @@ glm::mat4 CelestialBody::Translate(glm::mat4& model) {
 	glm::vec3 unitVec = glm::normalize(mCurrentPosition);
 	mSimulationPosition = unitVec * ratio * mSimulationInitialDistance;
 
+	/*
 	if (std::string(mName) == "Earth") {
 		SPDLOG_INFO("{} simulation position[x, y, z]: [{}, {}, {}]", std::string(mName), mSimulationPosition.x, mSimulationPosition.y, mSimulationPosition.z);
 	}
+	*/
 
 	return glm::translate(model, mSimulationPosition);
 }
@@ -102,10 +104,10 @@ glm::mat4 CelestialBody::TranslateFromGoverningObj(glm::mat4& model, CelestialBo
 	glm::vec3 rel_unit_vec = mCurrentPosition - governingObj->mCurrentPosition;
 	rel_unit_vec = glm::normalize(rel_unit_vec);
 
-	glm::vec3 rel_pos = ratio * distance * rel_unit_vec;
+	glm::vec3 rel_simul_pos = ratio * distance * rel_unit_vec;
 
-	mSimulationPosition = governingObj->mSimulationPosition + rel_pos;
-	SPDLOG_INFO("{} simulation position[x, y, z]: [{}, {}, {}]", std::string(mName), mSimulationPosition.x, mSimulationPosition.y, mSimulationPosition.z);
+	mSimulationPosition = governingObj->mSimulationPosition + rel_simul_pos;
+	//SPDLOG_INFO("{} simulation position[x, y, z]: [{}, {}, {}]", std::string(mName), mSimulationPosition.x, mSimulationPosition.y, mSimulationPosition.z);
 
 	return glm::translate(model, mSimulationPosition);
 }

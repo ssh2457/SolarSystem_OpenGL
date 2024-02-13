@@ -8,6 +8,7 @@
 #include "Common.h"
 #include "Star.h"
 #include "Planet.h"
+#include "Satellite.h"
 #include "Model.h"
 
 #include "Shader.h"
