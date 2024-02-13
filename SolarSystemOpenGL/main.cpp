@@ -49,8 +49,8 @@ int main(int argc, char** argv)
 	SPDLOG_INFO("Program start");
 
 	// Window
-	constexpr int WIDTH = 1152;
-	constexpr int HEIGHT = 864;
+	constexpr int WIDTH = 1366;
+	constexpr int HEIGHT = 768;
 
 	SPDLOG_INFO("Create GLFW window");
 

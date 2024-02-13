@@ -44,8 +44,9 @@ void SolarSystem::LoadSolarSystem() {
 	earthParams.semiMajorLength = EARTH_SUN_DISTANCE;
 	earthParams.centralBodyMu = mSun->GetMu();
 
-	mPlanets.push_back(std::make_unique<Planet>(earthParams));
-	mPeriodToScale = mPlanets[0]->GetRevolutionPeriod();
+	std::unique_ptr<Planet> earth = std::make_unique<Planet>(earthParams);
+	mPeriodToScale = earth->GetRevolutionPeriod();
+
 
 	revolutionableBodyParams_t moonParams;
 	memset(&moonParams, 0, sizeof(revolutionableBodyParams_t));
@@ -61,9 +62,11 @@ void SolarSystem::LoadSolarSystem() {
 	moonParams.base.simulationInitialDistance = earthParams.base.simulationInitialDistance + 1.5f;
 	moonParams.eccentricity = 0.0549f;
 	moonParams.semiMajorLength = 0.3633e6f;
-	moonParams.centralBodyMu = mPlanets[0]->GetMu();
+	moonParams.centralBodyMu = earth->GetMu();
 
-	mPlanets[0]->AddSatellite(std::make_unique<Satellite>(moonParams));
+	earth->AddSatellite(std::make_unique<Satellite>(moonParams));
+	mPlanets.push_back(std::move(earth));
+	
 
 	revolutionableBodyParams_t mercuryParams;
 	memset(&mercuryParams, 0, sizeof(revolutionableBodyParams_t));
@@ -137,7 +140,69 @@ void SolarSystem::LoadSolarSystem() {
 	jupiterParams.semiMajorLength = 740.595e6f;
 	jupiterParams.centralBodyMu = mSun->GetMu();
 
-	mPlanets.push_back(std::make_unique<Planet>(jupiterParams));
+	std::unique_ptr<Planet> jupiter = std::make_unique<Planet>(jupiterParams);
+
+	
+	revolutionableBodyParams_t europaParams;
+	memset(&europaParams, 0, sizeof(revolutionableBodyParams_t));
+	europaParams.base.fileName = "../../../../Blender models/Europa/Europa.obj";
+	europaParams.base.name = "Europa";
+	europaParams.base.initialPosition = glm::vec3(glm::length(jupiterParams.base.initialPosition) + 0.664862e6f, 0.f, 0.f);
+	europaParams.base.initialVelocity = glm::vec3(0.f, 0.f, -13.743);
+	europaParams.base.radius = 1560.8;
+	europaParams.base.mass = 0.04799844e24f;
+	europaParams.base.scale = 0.10f;
+	europaParams.base.rotationPeriod = 302400.f;
+	europaParams.base.inclination = glm::radians(0.47f + jupiterParams.base.inclination);
+	europaParams.base.simulationInitialDistance = jupiterParams.base.simulationInitialDistance + 2.5f; //
+	europaParams.eccentricity = 0.009f;
+	europaParams.semiMajorLength = 0.6709e6f;
+	europaParams.centralBodyMu = jupiter->GetMu();
+
+	jupiter->AddSatellite(std::make_unique<Satellite>(europaParams));
+
+	
+	revolutionableBodyParams_t ganymedeParams;
+	memset(&ganymedeParams, 0, sizeof(revolutionableBodyParams_t));
+	ganymedeParams.base.fileName = "../../../../Blender models/Ganymede/Ganymede.obj";
+	ganymedeParams.base.name = "Ganymede";
+	ganymedeParams.base.initialPosition = glm::vec3(glm::length(jupiterParams.base.initialPosition) + 1.069200e6f, 0.f, 0.f);
+	ganymedeParams.base.initialVelocity = glm::vec3(0.f, 0.f, -10.880);
+	ganymedeParams.base.radius = 2634.1f;
+	ganymedeParams.base.mass = 0.14819e24f;
+	ganymedeParams.base.scale = 0.17f;
+	ganymedeParams.base.rotationPeriod = 618153.3792f;
+	ganymedeParams.base.inclination = glm::radians(jupiterParams.base.inclination);
+	ganymedeParams.base.simulationInitialDistance = jupiterParams.base.simulationInitialDistance + 3.5f; //
+	ganymedeParams.eccentricity = 0.0013f;
+	ganymedeParams.semiMajorLength = 1.0704e6f;
+	ganymedeParams.centralBodyMu = jupiter->GetMu();
+
+	jupiter->AddSatellite(std::make_unique<Satellite>(ganymedeParams));
+	
+
+	
+	revolutionableBodyParams_t ioParams;
+	memset(&ioParams, 0, sizeof(revolutionableBodyParams_t));
+	ioParams.base.fileName = "../../../../Blender models/IO/IO.obj";
+	ioParams.base.name = "IO";
+	ioParams.base.initialPosition = glm::vec3(glm::length(jupiterParams.base.initialPosition) + 0.42e6f, 0.f, 0.f);
+	ioParams.base.initialVelocity = glm::vec3(0.f, 0.f, -17.334);
+	ioParams.base.radius = 1821.6f;
+	ioParams.base.mass = 0.08931938e24f;
+	ioParams.base.scale = 0.12f; 
+	ioParams.base.rotationPeriod = 152853.5047f;
+	ioParams.base.inclination = glm::radians(jupiterParams.base.inclination + 0.63f);
+	ioParams.base.simulationInitialDistance = jupiterParams.base.simulationInitialDistance + 1.85f; //
+	ioParams.eccentricity = 0.00403f;
+	ioParams.semiMajorLength = 0.4217e6f;
+	ioParams.centralBodyMu = jupiter->GetMu();
+
+	jupiter->AddSatellite(std::make_unique<Satellite>(ioParams));
+	
+
+	mPlanets.push_back(std::move(jupiter));
+
 
 	revolutionableBodyParams_t saturnParams;
 	memset(&saturnParams, 0, sizeof(revolutionableBodyParams_t));
@@ -155,7 +220,68 @@ void SolarSystem::LoadSolarSystem() {
 	saturnParams.semiMajorLength = 1357.554e6f;
 	saturnParams.centralBodyMu = mSun->GetMu();
 
-	mPlanets.push_back(std::make_unique<Planet>(saturnParams));
+	std::unique_ptr<Planet> saturn = std::make_unique<Planet>(saturnParams);
+
+
+	revolutionableBodyParams_t enceladusParams;
+	memset(&enceladusParams, 0, sizeof(revolutionableBodyParams_t));
+	enceladusParams.base.fileName = "../../../../Blender models/Enceladus/Enceladus.obj";
+	enceladusParams.base.name = "Enceladus";
+	enceladusParams.base.initialPosition = glm::vec3(glm::length(saturnParams.base.initialPosition) + 0.237e6f, 0.f, 0.f);
+	enceladusParams.base.initialVelocity = glm::vec3(0.f, 0.f, -15.128f);
+	enceladusParams.base.radius = 252.1f;
+	enceladusParams.base.mass = 0.0001080e24f;
+	enceladusParams.base.scale = 0.05f;
+	enceladusParams.base.rotationPeriod = 118386.8352f;
+	enceladusParams.base.inclination = glm::radians(saturnParams.base.inclination + 0.009f);
+	enceladusParams.base.simulationInitialDistance = saturnParams.base.simulationInitialDistance + 1.8f; //
+	enceladusParams.eccentricity = 0.0047f;
+	enceladusParams.semiMajorLength = 0.237948e6f;
+	enceladusParams.centralBodyMu = saturn->GetMu();
+
+	saturn->AddSatellite(std::make_unique<Satellite>(enceladusParams));
+
+	
+	revolutionableBodyParams_t mimasParams;
+	memset(&mimasParams, 0, sizeof(revolutionableBodyParams_t));
+	mimasParams.base.fileName = "../../../../Blender models/Mimas/Mimas.obj";
+	mimasParams.base.name = "Mimas";
+	mimasParams.base.initialPosition = glm::vec3(glm::length(saturnParams.base.initialPosition) + 0.181902e6f, 0.f, 0.f);
+	mimasParams.base.initialVelocity = glm::vec3(0.f, 0.f, -14.28f);
+	mimasParams.base.radius = 198.2f;
+	mimasParams.base.mass = 0.0000375e24f;
+	mimasParams.base.scale = 0.025f;
+	mimasParams.base.rotationPeriod = 81425.26f;
+	mimasParams.base.inclination = glm::radians(saturnParams.base.inclination + 0.009f);
+	mimasParams.base.simulationInitialDistance = saturnParams.base.simulationInitialDistance + 1.574f; //
+	mimasParams.eccentricity = 0.0196f;
+	mimasParams.semiMajorLength = 0.185539e6f;
+	mimasParams.centralBodyMu = saturn->GetMu();
+
+	saturn->AddSatellite(std::make_unique<Satellite>(mimasParams));
+	
+
+	
+	revolutionableBodyParams_t titanParams;
+	memset(&titanParams, 0, sizeof(revolutionableBodyParams_t));
+	titanParams.base.fileName = "../../../../Blender models/Titan/Titan.obj";
+	titanParams.base.name = "Titan";
+	titanParams.base.initialPosition = glm::vec3(glm::length(saturnParams.base.initialPosition) + 1.186680e6f, 0.f, 0.f);
+	titanParams.base.initialVelocity = glm::vec3(0.f, 0.f, -5.57f);
+	titanParams.base.radius = 2574.73f;
+	titanParams.base.mass = 0.13452e24f;
+	titanParams.base.scale = 0.17f; //
+	titanParams.base.rotationPeriod = 1377648.f;
+	titanParams.base.inclination = glm::radians(saturnParams.base.inclination + 0.348f);
+	titanParams.base.simulationInitialDistance = saturnParams.base.simulationInitialDistance + 4.5f; //
+	titanParams.eccentricity = 0.0288f;
+	titanParams.semiMajorLength = 1.22187e6f;
+	titanParams.centralBodyMu = saturn->GetMu();
+
+	saturn->AddSatellite(std::make_unique<Satellite>(titanParams));
+	
+	mPlanets.push_back(std::move(saturn));
+
 
 	revolutionableBodyParams_t uranosParams;
 	memset(&uranosParams, 0, sizeof(revolutionableBodyParams_t));
