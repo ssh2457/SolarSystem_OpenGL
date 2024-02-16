@@ -1,6 +1,10 @@
 #pragma once
 
-#include <memory>
+#include <spdlog/spdlog.h>
+
+#include <iostream>
+#include<memory>
+
 
 class Graphic {
 	friend std::unique_ptr<Graphic> std::make_unique<Graphic>();
@@ -11,7 +15,7 @@ public:
 	static std::unique_ptr<Graphic> GetInstance();
 private:
 
-	Graphic();
+	Graphic() = default;
 	virtual ~Graphic();
 
 	static std::unique_ptr<Graphic> instance;

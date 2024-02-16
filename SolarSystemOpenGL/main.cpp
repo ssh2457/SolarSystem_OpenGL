@@ -26,6 +26,7 @@
 #include "include/Window.h"
 #include "include/SolarSystem.h"
 #include "include/Model.h"
+#include "include/Graphic.h"
 
 using namespace std;
 
@@ -74,6 +75,25 @@ int main(int argc, char** argv)
 	shader->CreateFromFiles(vShader, fShader);
 
 	assert(simpleShader->GetBindingPoint() == shader->GetBindingPoint() && "Binding points are not same!");
+
+	pointLightParams_t pointLightParams;
+	memset(&pointLightParams, 0, sizeof(pointLightParams_t));
+	pointLightParams.base.red = 1.f;
+	pointLightParams.base.green = 1.f;
+	pointLightParams.base.blue = 1.f;
+
+	pointLightParams.base.ambientIntensity = 0.025f;
+	pointLightParams.base.diffuseIntensity = 1.0f;
+
+	pointLightParams.posX = 0;
+	pointLightParams.posY = 0;
+	pointLightParams.posZ = 0;
+
+	pointLightParams.con = 1.f;
+	pointLightParams.lin = 0.0001f;
+	pointLightParams.exp = 0.00001f;
+
+	unique_ptr<PointLight> pointLight = std::make_unique<PointLight>(pointLightParams);
 
 	GLuint uniformWorld = 0, uniformCameraPosition = 0, UBOMatrices = 0;
 
@@ -128,7 +148,8 @@ int main(int argc, char** argv)
 
 
 		// Draw object
-		shader.get()->SetPointLight(solarSystem->GetSun()->GetPointLight());
+		pointLight->SetPosition(solarSystem->GetSun()->GetCurrentPosition());
+		shader.get()->SetPointLight(pointLight.get());
 		solarSystem->UpdatePlanets(uniformWorld, delta);
 
 		glUseProgram(0);

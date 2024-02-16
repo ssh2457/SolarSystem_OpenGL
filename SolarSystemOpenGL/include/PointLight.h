@@ -23,6 +23,8 @@ public:
 		GLuint ambientIntensityLocation, GLuint diffuseIntensityLocation,
 		GLuint positionLocation,
 		GLuint constantLocation, GLuint linearLocation, GLuint exponentLocation);
+
+	void SetPosition(glm::vec3& position);
 private:
 	glm::vec3 mPosition;
 	GLfloat mConstant, mLinear, mExponent;

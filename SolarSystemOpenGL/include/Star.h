@@ -12,8 +12,5 @@ public:
 	Star() = delete;
 	Star(starParams_t& starParams);
 	virtual ~Star() = default;
-
-	PointLight* GetPointLight() const;
 private:
-	std::unique_ptr<PointLight> mPointLight;
 };

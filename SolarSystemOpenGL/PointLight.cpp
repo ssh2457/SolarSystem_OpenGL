@@ -32,3 +32,10 @@ void PointLight::UseLight(GLuint colourLocation,
 	glUniform1f(linearLocation, mLinear);
 	glUniform1f(exponentLocation, mExponent);
 }
+
+void PointLight::SetPosition(glm::vec3& position)
+{
+	mPosition.x = position.x;
+	mPosition.y = position.y;
+	mPosition.z = position.z;
+}
