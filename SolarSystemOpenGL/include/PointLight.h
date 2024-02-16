@@ -17,10 +17,7 @@ typedef struct PointLightParams {
 class PointLight : public Light {
 public:
 	PointLight();
-	PointLight(GLfloat red, GLfloat green, GLfloat blue,
-		GLfloat ambientIntensity, GLfloat diffuseIntensity,
-		GLfloat posX, GLfloat posY, GLfloat posZ,
-		GLfloat con, GLfloat lin, GLfloat exp);
+	PointLight(const pointLightParams_t& pointLightParams);
 	virtual ~PointLight() = default;
 	void UseLight(GLuint colourLocation,
 		GLuint ambientIntensityLocation, GLuint diffuseIntensityLocation,

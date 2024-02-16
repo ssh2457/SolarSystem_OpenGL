@@ -17,8 +17,8 @@ class SolarSystem {
 	friend std::unique_ptr<SolarSystem> std::make_unique<SolarSystem>();
 	friend std::unique_ptr<SolarSystem>::deleter_type;
 public:
-	SolarSystem(const SolarSystem& ) = delete;
-	SolarSystem& operator=(const SolarSystem&) = delete;
+	SolarSystem(const SolarSystem& other) = delete;
+	SolarSystem& operator=(const SolarSystem& other) = delete;
 	
 	static std::unique_ptr<SolarSystem> GetInstance();
 

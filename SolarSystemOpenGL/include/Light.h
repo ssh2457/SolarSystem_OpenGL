@@ -14,8 +14,7 @@ typedef struct LightParams {
 class Light {
 public:
 	Light();
-	Light(GLfloat red, GLfloat green, GLfloat blue,
-		GLfloat ambientIntensity, GLfloat diffuseIntensity);
+	Light(const lightParams_t& lightParams);
 	virtual ~Light();
 
 protected:

@@ -8,10 +8,10 @@ Light::Light()
 }
 
 
-Light::Light(GLfloat red, GLfloat green, GLfloat blue, GLfloat ambientIntensity, GLfloat diffuseIntensity)
-	: mColour(glm::vec3(red, green, blue))
-	, mAmbientIntensity(ambientIntensity)
-	, mDiffuseIntensity(diffuseIntensity) {
+Light::Light(const lightParams_t& lightParams)
+	: mColour(glm::vec3(lightParams.red, lightParams.green, lightParams.blue))
+	, mAmbientIntensity(lightParams.ambientIntensity)
+	, mDiffuseIntensity(lightParams.diffuseIntensity) {
 
 }
 

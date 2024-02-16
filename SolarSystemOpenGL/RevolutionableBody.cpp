@@ -1,10 +1,7 @@
 #include "include/RevolutionableBody.h"
 
 RevolutionableBody::RevolutionableBody(revolutionableBodyParams_t& revolutionableBodyParams)
-	: CelestialBody(revolutionableBodyParams.base.fileName, revolutionableBodyParams.base.name,
-		revolutionableBodyParams.base.initialPosition, revolutionableBodyParams.base.initialVelocity,
-		revolutionableBodyParams.base.radius, revolutionableBodyParams.base.mass,
-		revolutionableBodyParams.base.scale, revolutionableBodyParams.base.rotationPeriod, revolutionableBodyParams.base.inclination, revolutionableBodyParams.base.simulationInitialDistance)
+	: CelestialBody(revolutionableBodyParams.base)
 	, mRevolutionPeriod(0.f)
 	, mEccentricity(revolutionableBodyParams.eccentricity)
 	, mAccumulatedRevolutionTime(0.f)

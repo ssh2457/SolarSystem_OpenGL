@@ -2,32 +2,25 @@
 
 #include <limits>
 
-
-CelestialBody::CelestialBody(const std::string& fileName, const char* name,
-						glm::vec3& initialPosition, glm::vec3& initialVelocity,
-						float radius, float mass, 
-						float scale, 
-						float rotationPeriod,
-						float inclination,
-						float simulationInitialDistance)
-	: mFileName(fileName)
+CelestialBody::CelestialBody(const celestialBodyParams_t& celestialBodyParams)
+	: mFileName(celestialBodyParams.fileName)
 	, mName(nullptr)
-	, mInitialPosition(initialPosition)
-	, mCurrentPosition(initialPosition)
-	, mInitialVelocity(initialVelocity)
-	, mRadius(radius)
-	, mMass(mass)
-	, mScale(scale)
-	, mRotationPeriod(rotationPeriod)
+	, mInitialPosition(celestialBodyParams.initialPosition)
+	, mCurrentPosition(celestialBodyParams.initialPosition)
+	, mInitialVelocity(celestialBodyParams.initialVelocity)
+	, mRadius(celestialBodyParams.radius)
+	, mMass(celestialBodyParams.mass)
+	, mScale(celestialBodyParams.scale)
+	, mRotationPeriod(celestialBodyParams.rotationPeriod)
 	, mGravitionalConstant(6.6743e-20)
 	, mAccumulatedRotationTime(0.f)
-	, mInclination (inclination)
-	, mSimulationInitialDistance(simulationInitialDistance)
+	, mInclination (celestialBodyParams.inclination)
+	, mSimulationInitialDistance(celestialBodyParams.simulationInitialDistance)
 	, mSimulationPosition(glm::vec3(0, 0, 0))
 {
-	mName = new char[strlen(name) + 1];
-	memcpy(mName, name, strlen(name) + 1);
-	mName[strlen(name)] = '\0';
+	mName = new char[strlen(celestialBodyParams.name) + 1];
+	memcpy(mName, celestialBodyParams.name, strlen(celestialBodyParams.name) + 1);
+	mName[strlen(celestialBodyParams.name)] = '\0';
 	mMu = mGravitionalConstant * mMass;
 }
 

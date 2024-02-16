@@ -8,16 +8,12 @@ PointLight::PointLight()
 	, mExponent(0.f) {
 }
 
-PointLight::PointLight(GLfloat red, GLfloat green, GLfloat blue,
-	GLfloat ambientIntensity, GLfloat diffuseIntensity,
-	GLfloat posX, GLfloat posY, GLfloat posZ,
-	GLfloat con, GLfloat lin, GLfloat exp)
-	: Light(red, green, blue,
-		ambientIntensity, diffuseIntensity)
-	, mPosition(glm::vec3(posX, posY, posZ))
-	, mConstant(con)
-	, mLinear(lin)
-	, mExponent(exp) {
+PointLight::PointLight(const pointLightParams_t& pointLightParams)
+	: Light(pointLightParams.base)
+	, mPosition(glm::vec3(pointLightParams.posX, pointLightParams.posY, pointLightParams.posZ))
+	, mConstant(pointLightParams.con)
+	, mLinear(pointLightParams.lin)
+	, mExponent(pointLightParams.exp) {
 
 }
 
