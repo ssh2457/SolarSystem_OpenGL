@@ -1,5 +1,6 @@
 ﻿#define STB_IMAGE_IMPLEMENTATION
 
+
 #include <assimp/Importer.hpp>
 
 #include <GL/glew.h>
@@ -68,10 +69,10 @@ int main(int argc, char** argv)
 
 	unique_ptr<Shader> simpleShader = make_unique<Shader>();
 	simpleShader->CreateFromFiles(vSimpleShader, fSimpleShader);
-	
+
 	unique_ptr<Shader> shader = make_unique<Shader>();
 	shader->CreateFromFiles(vShader, fShader);
-	
+
 	assert(simpleShader->GetBindingPoint() == shader->GetBindingPoint() && "Binding points are not same!");
 
 	GLuint uniformWorld = 0, uniformCameraPosition = 0, UBOMatrices = 0;
@@ -125,7 +126,7 @@ int main(int argc, char** argv)
 		uniformCameraPosition = shader->GetCameraPositionLocation();
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
 
-		
+
 		// Draw object
 		shader.get()->SetPointLight(solarSystem->GetSun()->GetPointLight());
 		solarSystem->UpdatePlanets(uniformWorld, delta);

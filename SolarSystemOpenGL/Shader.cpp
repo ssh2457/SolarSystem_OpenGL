@@ -72,9 +72,9 @@ GLuint Shader::GetExponentLocation() const {
 
 void Shader::SetPointLight(PointLight* light) {
 	light->UseLight(mUniformLightColour,
-					mUniformAmbientIntensity, mUniformDiffuseIntensity,
-					mUniformLightPosition,
-					mUniformConstant, mUniformLinear, mUniformExponent);
+		mUniformAmbientIntensity, mUniformDiffuseIntensity,
+		mUniformLightPosition,
+		mUniformConstant, mUniformLinear, mUniformExponent);
 }
 
 void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {

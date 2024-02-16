@@ -35,10 +35,10 @@ public:
 
 private:
 	GLuint	mUniformCameraPosition,
-			mUniformLightColour,
-			mUniformAmbientIntensity, mUniformDiffuseIntensity, 
-			mUniformLightPosition, 
-			mUniformConstant, mUniformLinear, mUniformExponent;
+		mUniformLightColour,
+		mUniformAmbientIntensity, mUniformDiffuseIntensity,
+		mUniformLightPosition,
+		mUniformConstant, mUniformLinear, mUniformExponent;
 
 	virtual void CompileShader(const char* vertexCode, const char* fragmentCode) override;
 };

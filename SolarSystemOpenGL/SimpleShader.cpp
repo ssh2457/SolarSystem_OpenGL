@@ -122,4 +122,3 @@ void SimpleShader::AddShader(GLuint theProgram, const char* shaderCode, GLenum s
 
 	glAttachShader(theProgram, theSimpleShader);
 }
-

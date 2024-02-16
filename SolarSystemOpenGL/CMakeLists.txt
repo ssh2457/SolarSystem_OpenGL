@@ -18,7 +18,9 @@ add_executable (${CMAKE_PROJECT_NAME} "main.cpp"
 										"include/Light.h" "Light.cpp" 
 										"include/PointLight.h" "PointLight.cpp" 
 										"include/SimpleShader.h" "SimpleShader.cpp"
-										"include/Satellite.h" "Satellite.cpp" "include/RevolutionableBody.h" "RevolutionableBody.cpp")
+										"include/Satellite.h" "Satellite.cpp" 
+										"include/RevolutionableBody.h" "RevolutionableBody.cpp" 
+										"include/ShadowMap.h" "ShadowMap.cpp")
 
 
 # TODO: Add tests and install targets if needed.

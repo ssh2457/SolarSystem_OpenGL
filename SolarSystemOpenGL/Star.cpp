@@ -25,9 +25,9 @@ Star::Star(starParams_t& starParams)
 	pointLightParams.exp = 0.00001f;
 
 	mPointLight = std::make_unique<PointLight>(pointLightParams.base.red, pointLightParams.base.green, pointLightParams.base.blue,
-												pointLightParams.base.ambientIntensity, pointLightParams.base.diffuseIntensity,
-												pointLightParams.posX, pointLightParams.posY, pointLightParams.posZ,
-												pointLightParams.con, pointLightParams.lin, pointLightParams.exp);
+		pointLightParams.base.ambientIntensity, pointLightParams.base.diffuseIntensity,
+		pointLightParams.posX, pointLightParams.posY, pointLightParams.posZ,
+		pointLightParams.con, pointLightParams.lin, pointLightParams.exp);
 }
 
 PointLight* Star::GetPointLight() const {

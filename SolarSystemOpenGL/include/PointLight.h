@@ -18,9 +18,9 @@ class PointLight : public Light {
 public:
 	PointLight();
 	PointLight(GLfloat red, GLfloat green, GLfloat blue,
-				GLfloat ambientIntensity, GLfloat diffuseIntensity,
-				GLfloat posX, GLfloat posY, GLfloat posZ,
-				GLfloat con, GLfloat lin, GLfloat exp);
+		GLfloat ambientIntensity, GLfloat diffuseIntensity,
+		GLfloat posX, GLfloat posY, GLfloat posZ,
+		GLfloat con, GLfloat lin, GLfloat exp);
 	virtual ~PointLight() = default;
 	void UseLight(GLuint colourLocation,
 		GLuint ambientIntensityLocation, GLuint diffuseIntensityLocation,
