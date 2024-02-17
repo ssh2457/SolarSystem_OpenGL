@@ -19,6 +19,7 @@ Light::Light(const lightParams_t& lightParams)
 	, mAmbientIntensity(lightParams.ambientIntensity)
 	, mDiffuseIntensity(lightParams.diffuseIntensity) 
 	, mLightProjection(glm::mat4(1.f))
+	, mShadowMap(nullptr)
 {
 	mShadowMap = std::make_unique<ShadowMap>();
 	mShadowMap->Init(lightParams.shadowMapParams.width, lightParams.shadowMapParams.height);
