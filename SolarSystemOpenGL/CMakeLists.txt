@@ -21,7 +21,8 @@ add_executable (${CMAKE_PROJECT_NAME} "main.cpp"
 										"include/Satellite.h" "Satellite.cpp" 
 										"include/RevolutionableBody.h" "RevolutionableBody.cpp" 
 										"include/ShadowMap.h" "ShadowMap.cpp" 
-										"include/Graphic.h" "Graphic.cpp")
+										"include/Graphic.h" "Graphic.cpp"
+										"include/OmniShadowMap.h" "OmniShadowMap.cpp")
 
 
 # TODO: Add tests and install targets if needed.

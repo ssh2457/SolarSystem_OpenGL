@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glm\gtc\matrix_transform.hpp"
+
 #include "Light.h"
 
 typedef struct PointLightParams {
@@ -16,7 +18,7 @@ typedef struct PointLightParams {
 
 class PointLight : public Light {
 public:
-	PointLight();
+	PointLight() = delete;
 	PointLight(const pointLightParams_t& pointLightParams);
 	virtual ~PointLight() = default;
 	void UseLight(GLuint colourLocation,
@@ -24,7 +26,9 @@ public:
 		GLuint positionLocation,
 		GLuint constantLocation, GLuint linearLocation, GLuint exponentLocation);
 
+	glm::vec3 GetPosition() const { return mPosition; }
 	void SetPosition(glm::vec3& position);
+
 private:
 	glm::vec3 mPosition;
 	GLfloat mConstant, mLinear, mExponent;

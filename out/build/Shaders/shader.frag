@@ -22,6 +22,7 @@ uniform float constant;
 uniform float linear;
 uniform float exponent;
 
+
 void main() {
 	vec3 lightDirection = FragPos - LightPosition;
 	float distance = length(lightDirection);
@@ -47,7 +48,9 @@ void main() {
 	float attenuation = exponent * distance * distance +
 						linear * distance +
 						constant;
+                        
+    float shadowFactor = 0.0;
 	
-	vec4 finalColour = (ambientColour + diffuseColour + specularColour) / attenuation;
+	vec4 finalColour = (ambientColour + (1.0 - shadowFactor) * (diffuseColour + specularColour)) / attenuation;
 	colour = texture(theTexture, TexCoord) * finalColour;
 }

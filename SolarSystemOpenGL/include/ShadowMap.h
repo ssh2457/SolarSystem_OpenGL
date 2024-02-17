@@ -3,6 +3,11 @@
 #include <spdlog/spdlog.h>
 #include <GL/glew.h>
 
+typedef struct ShadowMapParams{
+	GLuint width;
+	GLuint height;
+} shadowMapParams_t;
+
 class ShadowMap {
 public:
 	ShadowMap();
@@ -13,8 +18,8 @@ public:
 	virtual void Write();
 	virtual void Read(GLenum textureUnit);
 
-	GLuint GetShadowWidth() { return mShadowWidth; }
-	GLuint GetShadowHeight() { return mShadowWidth; }
+	GLuint GetShadowWidth() const { return mShadowWidth; }
+	GLuint GetShadowHeight() const { return mShadowWidth; }
 
 protected:
 	GLuint mFBO, mShadowMapID;

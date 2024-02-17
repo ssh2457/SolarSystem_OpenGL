@@ -9,7 +9,9 @@ Shader::Shader()
 	, mUniformLightPosition(0)
 	, mUniformConstant(0)
 	, mUniformLinear(0)
-	, mUniformExponent(0) {
+	, mUniformExponent(0)
+	, mUniformTexture(0)
+{
 
 }
 
@@ -35,6 +37,8 @@ void Shader::ClearShader() {
 	mUniformConstant = 0;
 	mUniformLinear = 0;
 	mUniformExponent = 0;
+
+	mUniformTexture = 0;
 }
 
 GLuint Shader::GetCameraPositionLocation() const
@@ -75,6 +79,11 @@ void Shader::SetPointLight(PointLight* light) {
 		mUniformAmbientIntensity, mUniformDiffuseIntensity,
 		mUniformLightPosition,
 		mUniformConstant, mUniformLinear, mUniformExponent);
+}
+
+void Shader::SetTexture(const GLuint textureUnit)
+{
+	glUniform1i(mUniformTexture, textureUnit);
 }
 
 void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
@@ -123,4 +132,8 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	mUniformConstant = glGetUniformLocation(mShaderID, "constant");
 	mUniformLinear = glGetUniformLocation(mShaderID, "linear");
 	mUniformExponent = glGetUniformLocation(mShaderID, "exponent");
+
+	// for shadowMap
+	mUniformTexture = glGetUniformLocation(mShaderID, "theTexture");
+
 }

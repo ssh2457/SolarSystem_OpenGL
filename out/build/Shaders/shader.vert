@@ -15,7 +15,6 @@ layout (std140) uniform Matrices {
 	mat4 view;
 };
 
-
 void main()
 {
 	gl_Position = projection * view * world * vec4(pos, 1.0);

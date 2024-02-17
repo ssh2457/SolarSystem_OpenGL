@@ -3,6 +3,8 @@
 #include <gl/glew.h>
 #include <spdlog/spdlog.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <fstream>
 
@@ -33,12 +35,15 @@ public:
 
 	void SetPointLight(PointLight* light);
 
+	void SetTexture(const GLuint textureUnit); // for ShadowMap
+
 private:
 	GLuint	mUniformCameraPosition,
 		mUniformLightColour,
 		mUniformAmbientIntensity, mUniformDiffuseIntensity,
 		mUniformLightPosition,
-		mUniformConstant, mUniformLinear, mUniformExponent;
+		mUniformConstant, mUniformLinear, mUniformExponent,
+		mUniformTexture; // for ShadowMap
 
 	virtual void CompileShader(const char* vertexCode, const char* fragmentCode) override;
 };

@@ -1,5 +1,6 @@
 #include "include/PointLight.h"
 
+/*
 PointLight::PointLight()
 	: Light()
 	, mPosition(glm::vec3(0.f, 0.f, 0.f))
@@ -7,14 +8,15 @@ PointLight::PointLight()
 	, mLinear(0.f)
 	, mExponent(0.f) {
 }
+*/
 
 PointLight::PointLight(const pointLightParams_t& pointLightParams)
 	: Light(pointLightParams.base)
 	, mPosition(glm::vec3(pointLightParams.posX, pointLightParams.posY, pointLightParams.posZ))
 	, mConstant(pointLightParams.con)
 	, mLinear(pointLightParams.lin)
-	, mExponent(pointLightParams.exp) {
-
+	, mExponent(pointLightParams.exp) 
+{
 }
 
 void PointLight::UseLight(GLuint colourLocation,

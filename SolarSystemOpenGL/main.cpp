@@ -36,10 +36,15 @@ static GLfloat last = 0.0f;
 // vertex shader
 static const char* vShader = "../../Shaders/shader.vert";
 static const char* vSimpleShader = "../../Shaders/SimpleShader.vert";
+static const char* vOmniShadowShader = "../../Shaders/omni_directional_shadow_map.vert";
 
 // fragment shader
 static const char* fShader = "../../Shaders/shader.frag";
 static const char* fSimpleShader = "../../Shaders/SimpleShader.frag";
+static const char* fOmniShadowShader = "../../Shaders/omni_directional_shadow_map.frag";
+
+// geometry shader
+static const char* gOmniShadowShader = "../../Shaders/omni_directional_shadow_map.geom";
 
 
 int main(int argc, char** argv)
@@ -74,6 +79,7 @@ int main(int argc, char** argv)
 	unique_ptr<Shader> shader = make_unique<Shader>();
 	shader->CreateFromFiles(vShader, fShader);
 
+
 	assert(simpleShader->GetBindingPoint() == shader->GetBindingPoint() && "Binding points are not same!");
 
 	pointLightParams_t pointLightParams;
@@ -84,6 +90,9 @@ int main(int argc, char** argv)
 
 	pointLightParams.base.ambientIntensity = 0.025f;
 	pointLightParams.base.diffuseIntensity = 1.0f;
+
+	pointLightParams.base.shadowMapParams.width = mainWindow->GetBufferWidth();
+	pointLightParams.base.shadowMapParams.height = mainWindow->GetBufferHeight();
 
 	pointLightParams.posX = 0;
 	pointLightParams.posY = 0;
@@ -107,6 +116,8 @@ int main(int argc, char** argv)
 	glBindBufferRange(GL_UNIFORM_BUFFER, simpleShader->GetBindingPoint(), UBOMatrices, 0, 2 * sizeof(glm::mat4));
 
 
+	glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
+
 	float angle = 0.f;
 	last = glfwGetTime();
 	// Loop until window closed
@@ -123,13 +134,21 @@ int main(int argc, char** argv)
 		camera->MouseControl(mainWindow->GetXChange(), mainWindow->GetYChange());
 
 		// Clear the window
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.f, 1.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		simpleShader->UseShader();
-		uniformWorld = simpleShader->GetWorldLocation();
 
-		glm::mat4 projection = glm::perspective(glm::radians(mainWindow->GetFOV()), mainWindow->GetBufferWidth() / static_cast<GLfloat>(mainWindow->GetBufferHeight()), 0.1f, 500.f);
+		// Render shadow
+
+		
+		// Render planets
+		shader->UseShader();
+		uniformWorld = shader->GetWorldLocation();
+
+		uniformCameraPosition = shader->GetCameraPositionLocation();
+
+		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
+
 		glBindBuffer(GL_UNIFORM_BUFFER, UBOMatrices);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(projection));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -138,9 +157,18 @@ int main(int argc, char** argv)
 		glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera->CalcViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+		pointLight->SetPosition(solarSystem->GetSun()->GetCurrentPosition());
+		shader->SetPointLight(pointLight.get());
+		solarSystem->UpdatePlanets(uniformWorld, delta);
+
+
+		// Render the Sun
+		simpleShader->UseShader();
+		uniformWorld = simpleShader->GetWorldLocation();
 		solarSystem->UpdateSun(uniformWorld, delta);
 
-
+		// Original
+		/*
 		shader->UseShader();
 		uniformWorld = shader->GetWorldLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
@@ -151,6 +179,7 @@ int main(int argc, char** argv)
 		pointLight->SetPosition(solarSystem->GetSun()->GetCurrentPosition());
 		shader.get()->SetPointLight(pointLight.get());
 		solarSystem->UpdatePlanets(uniformWorld, delta);
+		*/
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();
