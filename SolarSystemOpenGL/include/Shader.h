@@ -19,6 +19,10 @@ public:
 
 	virtual void ClearShader() override;
 
+	virtual void CreateFromFiles(const char* vertexPath, const char* fragmentPath) override;
+	virtual void CreateFromFiles(const char* vertexPath, const char* geometryPath, const char* fragmentPath);
+	
+
 	GLuint GetCameraPositionLocation() const;
 
 	GLuint GetLightCoulourLocation() const;
@@ -33,9 +37,14 @@ public:
 	GLuint GetLinearLocation() const;
 	GLuint GetExponentLocation() const;
 
-	void SetPointLight(PointLight* light);
+	GLuint GetOmniLightPosLocation() const { return mUniformOmniLightPos; }
+	GLuint GetFarPlaneLocation() const { return mUniformFarPlane; }
+
+	void SetPointLight(PointLight* light, GLuint textureUnit);
 
 	void SetTexture(const GLuint textureUnit); // for ShadowMap
+
+	void SetLightMatrices(std::vector<glm::mat4> lightMatrices);
 
 private:
 	GLuint	mUniformCameraPosition,
@@ -43,7 +52,17 @@ private:
 		mUniformAmbientIntensity, mUniformDiffuseIntensity,
 		mUniformLightPosition,
 		mUniformConstant, mUniformLinear, mUniformExponent,
-		mUniformTexture; // for ShadowMap
+		mUniformTexture,
+		mUniformOmniLightPos, mUniformFarPlane; // for ShadowMap
+
+	GLuint mUniformLightMatrices[6];
+
+	struct {
+		GLuint shadowMap;
+		GLuint farPlane;
+	} mUniformOmniShadowMap;
 
 	virtual void CompileShader(const char* vertexCode, const char* fragmentCode) override;
+	void CompileShader(const char* vertexCode, const char* geometryCode, const char* fragmentCode);
+
 };

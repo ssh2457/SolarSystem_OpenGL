@@ -4,6 +4,10 @@
 
 #include "Light.h"
 
+#include "OmniShadowMap.h"
+
+#include <vector>
+
 typedef struct PointLightParams {
 	lightParams_t base;
 
@@ -14,12 +18,13 @@ typedef struct PointLightParams {
 	GLfloat con;
 	GLfloat lin;
 	GLfloat exp;
+
 } pointLightParams_t;
 
 class PointLight : public Light {
 public:
 	PointLight() = delete;
-	PointLight(const pointLightParams_t& pointLightParams);
+	PointLight(const pointLightParams_t& pointLightParams, GLfloat nearPlane, GLfloat farPlane);
 	virtual ~PointLight() = default;
 	void UseLight(GLuint colourLocation,
 		GLuint ambientIntensityLocation, GLuint diffuseIntensityLocation,
@@ -29,10 +34,16 @@ public:
 	glm::vec3 GetPosition() const { return mPosition; }
 	void SetPosition(glm::vec3& position);
 
+
+	std::vector<glm::mat4> CalcLightTransform();
+
+	GLfloat GetFarPlane() const { return mFarPlane; }
 private:
 	glm::vec3 mPosition;
 	GLfloat mConstant, mLinear, mExponent;
 
 	// pointlight attenuation equation:
 	// Exponent * x^2 + Linear * x + Constant
+
+	GLfloat mFarPlane;
 };

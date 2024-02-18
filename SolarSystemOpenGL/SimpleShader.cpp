@@ -98,6 +98,7 @@ void SimpleShader::CompileShader(const char* vertexCode, const char* fragmentCod
 	glUniformBlockBinding(mShaderID, mUniformBlock, mBindingPoint);
 
 	mUniformWorld = glGetUniformLocation(mShaderID, "world");
+
 }
 
 void SimpleShader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {

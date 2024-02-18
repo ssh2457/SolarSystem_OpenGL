@@ -13,6 +13,9 @@ public:
 	Graphic(const Graphic& other) = delete;
 	Graphic& operator=(const Graphic& other) = delete;
 	static std::unique_ptr<Graphic> GetInstance();
+
+	void OmniShadowMapPass();
+	void RenderPass();
 private:
 
 	Graphic() = default;

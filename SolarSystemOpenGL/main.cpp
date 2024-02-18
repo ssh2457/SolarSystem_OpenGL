@@ -49,7 +49,6 @@ static const char* gOmniShadowShader = "../../Shaders/omni_directional_shadow_ma
 
 int main(int argc, char** argv)
 {
-
 	auto glVersion = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
 	SPDLOG_INFO("OpenGL context version: {}", glVersion);
 
@@ -61,7 +60,7 @@ int main(int argc, char** argv)
 
 	SPDLOG_INFO("Create GLFW window");
 
-	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 45.f);
+	unique_ptr<Window> mainWindow = make_unique<Window>(WIDTH, HEIGHT, 60.f);
 	mainWindow->Initialise();
 
 	// Camera
@@ -73,11 +72,15 @@ int main(int argc, char** argv)
 	solarSystem->LoadSolarSystem();
 
 
-	unique_ptr<Shader> simpleShader = make_unique<Shader>();
+	unique_ptr<SimpleShader> simpleShader = make_unique<SimpleShader>();
 	simpleShader->CreateFromFiles(vSimpleShader, fSimpleShader);
 
 	unique_ptr<Shader> shader = make_unique<Shader>();
 	shader->CreateFromFiles(vShader, fShader);
+
+	unique_ptr<Shader> omniShadowShader = make_unique<Shader>();
+	omniShadowShader->CreateFromFiles(vOmniShadowShader, gOmniShadowShader, fOmniShadowShader);
+
 
 
 	assert(simpleShader->GetBindingPoint() == shader->GetBindingPoint() && "Binding points are not same!");
@@ -91,8 +94,8 @@ int main(int argc, char** argv)
 	pointLightParams.base.ambientIntensity = 0.025f;
 	pointLightParams.base.diffuseIntensity = 1.0f;
 
-	pointLightParams.base.shadowMapParams.width = mainWindow->GetBufferWidth();
-	pointLightParams.base.shadowMapParams.height = mainWindow->GetBufferHeight();
+	pointLightParams.base.shadowMapParams.width = 1024;
+	pointLightParams.base.shadowMapParams.height = 1024;
 
 	pointLightParams.posX = 0;
 	pointLightParams.posY = 0;
@@ -102,9 +105,9 @@ int main(int argc, char** argv)
 	pointLightParams.lin = 0.0001f;
 	pointLightParams.exp = 0.00001f;
 
-	unique_ptr<PointLight> pointLight = std::make_unique<PointLight>(pointLightParams);
+	unique_ptr<PointLight> pointLight = std::make_unique<PointLight>(pointLightParams, 0.1f, 500.f);
 
-	GLuint uniformWorld = 0, uniformCameraPosition = 0, UBOMatrices = 0;
+	GLuint uniformWorld = 0, uniformCameraPosition = 0, UBOMatrices = 0, uniformOmniLightPos = 0, uniformFarPlane = 0;
 
 	// Generate Uniform Buffer Object
 	glGenBuffers(1, &UBOMatrices);
@@ -133,18 +136,40 @@ int main(int argc, char** argv)
 		camera->KeyControl(mainWindow->GetKeys(), delta);
 		camera->MouseControl(mainWindow->GetXChange(), mainWindow->GetYChange());
 
-		// Clear the window
-		glClearColor(0.f, 1.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+	
 		// Render shadow
+		omniShadowShader->UseShader();
 
+		glViewport(0, 0, pointLight->GetShadowMap()->GetShadowWidth(), pointLight->GetShadowMap()->GetShadowHeight());
+
+		uniformWorld = omniShadowShader->GetWorldLocation();
+		uniformOmniLightPos = omniShadowShader->GetOmniLightPosLocation();
+		uniformFarPlane = omniShadowShader->GetFarPlaneLocation();
+
+		pointLight->GetShadowMap()->Write();
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		glUniform3f(uniformOmniLightPos, pointLight->GetPosition().x, pointLight->GetPosition().y, pointLight->GetPosition().z);
+		glUniform1f(uniformFarPlane, pointLight->GetFarPlane());
+		omniShadowShader->SetLightMatrices(pointLight->CalcLightTransform());
+
+		solarSystem->UpdatePlanets(uniformWorld, delta / 2.f);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 		
 		// Render planets
 		shader->UseShader();
-		uniformWorld = shader->GetWorldLocation();
 
+			// Clear the window
+		glViewport(0, 0, mainWindow->GetBufferWidth(), mainWindow->GetBufferHeight());
+
+		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+		uniformWorld = shader->GetWorldLocation();
 		uniformCameraPosition = shader->GetCameraPositionLocation();
 
 		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
@@ -158,28 +183,19 @@ int main(int argc, char** argv)
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 		pointLight->SetPosition(solarSystem->GetSun()->GetCurrentPosition());
-		shader->SetPointLight(pointLight.get());
-		solarSystem->UpdatePlanets(uniformWorld, delta);
+		shader->SetPointLight(pointLight.get(), 1);
+
+
+		pointLight->GetShadowMap()->Read(GL_TEXTURE1);
+		shader->SetTexture(0);
+
+		solarSystem->UpdatePlanets(uniformWorld, delta / 2.f);
 
 
 		// Render the Sun
 		simpleShader->UseShader();
 		uniformWorld = simpleShader->GetWorldLocation();
 		solarSystem->UpdateSun(uniformWorld, delta);
-
-		// Original
-		/*
-		shader->UseShader();
-		uniformWorld = shader->GetWorldLocation();
-		uniformCameraPosition = shader->GetCameraPositionLocation();
-		glUniform3f(uniformCameraPosition, camera->GetCameraPosition().x, camera->GetCameraPosition().y, camera->GetCameraPosition().z);
-
-
-		// Draw object
-		pointLight->SetPosition(solarSystem->GetSun()->GetCurrentPosition());
-		shader.get()->SetPointLight(pointLight.get());
-		solarSystem->UpdatePlanets(uniformWorld, delta);
-		*/
 
 		glUseProgram(0);
 		mainWindow->SwapBuffers();

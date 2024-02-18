@@ -234,7 +234,7 @@ void Window::MouseButton(int button, int action) {
 void Window::HandleScroll(GLFWwindow* window, double xOffset, double yOffset) {
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-	if (theWindow->mFOV >= 1.0f && theWindow->mFOV <= 45.0f) {
+	if (theWindow->mFOV >= 1.0f && theWindow->mFOV <= 60.0f) {
 		theWindow->mFOV -= static_cast<GLfloat>(yOffset);
 	}
 		
@@ -242,8 +242,8 @@ void Window::HandleScroll(GLFWwindow* window, double xOffset, double yOffset) {
 		theWindow->mFOV = 1.0f;
 	}
 
-	if (theWindow->mFOV >= 45.0f) {
-		theWindow->mFOV = 45.0f;
+	if (theWindow->mFOV >= 60.0f) {
+		theWindow->mFOV = 60.0f;
 	}
 		
 }
