@@ -18,6 +18,6 @@ To illustrate the eclipse effect, the omnidirectional shadow map is used in this
 </p>
 
 <p align="center">
-    <img src="./images/clipse2.png" title="eclipse effect2">    
+    <img src="./images/eclipse2.png" title="eclipse effect2">    
     Demonstration image: eclipse effect2 (The Moon's shadow is expressed on the Earth's surface.)
 </p>
