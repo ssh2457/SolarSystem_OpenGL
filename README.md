@@ -7,17 +7,17 @@ In order to visualize its 3D simulation more stereoscopically, a cube box and sh
 
 <p align="center">
     <img src="./images/demonstration1.png" title="demonstration1">    
-    Demonstration image: general view
+    image1: general view
 </p>
 
 To illustrate the eclipse effect, the omnidirectional shadow map is used in this project. The example images are below:
 
 <p align="center">
     <img src="./images/clipse1.png" title="eclipse effect1">    
-    Demonstration image: eclipse effect1 (The Moon is hidden bebind the Earth.)
+    image2: eclipse effect1 (The Moon is hidden bebind the Earth.)
 </p>
 
 <p align="center">
     <img src="./images/eclipse2.png" title="eclipse effect2">    
-    Demonstration image: eclipse effect2 (The Moon's shadow is expressed on the Earth's surface.)
+    image3: eclipse effect2 (The Moon's shadow is expressed on the Earth's surface.)
 </p>
