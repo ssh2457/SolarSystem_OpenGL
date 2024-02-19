@@ -137,14 +137,6 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 		return;
 	}
 
-	glValidateProgram(mShaderID);
-	glGetProgramiv(mShaderID, GL_VALIDATE_STATUS, &result);
-	if (!result) {
-		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
-		SPDLOG_ERROR("Error validating program: {}", eLog);
-		return;
-	}
-
 	mUniformBlock = glGetUniformBlockIndex(mShaderID, "Matrices");
 	glUniformBlockBinding(mShaderID, mUniformBlock, mBindingPoint);
 
@@ -201,14 +193,6 @@ void Shader::CompileShader(const char* vertexCode, const char* geometryCode, con
 	if (!result) {
 		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
 		SPDLOG_ERROR("Error linking program: {}", eLog);
-		return;
-	}
-
-	glValidateProgram(mShaderID);
-	glGetProgramiv(mShaderID, GL_VALIDATE_STATUS, &result);
-	if (!result) {
-		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
-		SPDLOG_ERROR("Error validating program: {}", eLog);
 		return;
 	}
 

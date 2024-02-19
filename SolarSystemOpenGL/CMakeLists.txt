@@ -22,7 +22,8 @@ add_executable (${CMAKE_PROJECT_NAME} "main.cpp"
 										"include/RevolutionableBody.h" "RevolutionableBody.cpp" 
 										"include/ShadowMap.h" "ShadowMap.cpp" 
 										"include/Graphic.h" "Graphic.cpp"
-										"include/OmniShadowMap.h" "OmniShadowMap.cpp")
+										"include/OmniShadowMap.h" "OmniShadowMap.cpp"
+										"include/SkyBox.h" "SkyBox.cpp")
 
 
 # TODO: Add tests and install targets if needed.

@@ -1,6 +1,7 @@
 ﻿#define STB_IMAGE_IMPLEMENTATION
 
 
+
 #include <assimp/Importer.hpp>
 
 #include <GL/glew.h>
@@ -27,6 +28,7 @@
 #include "include/SolarSystem.h"
 #include "include/Model.h"
 #include "include/Graphic.h"
+//#include "include/SkyBox.h"
 
 using namespace std;
 
@@ -80,6 +82,17 @@ int main(int argc, char** argv)
 
 	unique_ptr<Shader> omniShadowShader = make_unique<Shader>();
 	omniShadowShader->CreateFromFiles(vOmniShadowShader, gOmniShadowShader, fOmniShadowShader);
+
+
+	vector<string> skyboxFaces;
+	skyboxFaces.push_back("../../Textures/Skybox/space_rt.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_lf.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_up.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_dn.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_bk.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_ft.jpg");
+
+	//unique_ptr<SkyBox> skybox = make_unique<SkyBox>(skyboxFaces);
 
 
 
@@ -153,6 +166,7 @@ int main(int argc, char** argv)
 		glUniform3f(uniformOmniLightPos, pointLight->GetPosition().x, pointLight->GetPosition().y, pointLight->GetPosition().z);
 		glUniform1f(uniformFarPlane, pointLight->GetFarPlane());
 		omniShadowShader->SetLightMatrices(pointLight->CalcLightTransform());
+		omniShadowShader->Validate();
 
 		solarSystem->UpdatePlanets(uniformWorld, delta / 2.f);
 
@@ -160,13 +174,15 @@ int main(int argc, char** argv)
 		
 		
 		// Render planets
+		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//skybox->DrawSkyBox(UBOMatrices, camera->CalcViewMatrix(), projection);
+
 		shader->UseShader();
 
 			// Clear the window
 		glViewport(0, 0, mainWindow->GetBufferWidth(), mainWindow->GetBufferHeight());
-
-		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 		uniformWorld = shader->GetWorldLocation();
@@ -188,6 +204,7 @@ int main(int argc, char** argv)
 
 		pointLight->GetShadowMap()->Read(GL_TEXTURE1);
 		shader->SetTexture(0);
+		shader->Validate();
 
 		solarSystem->UpdatePlanets(uniformWorld, delta / 2.f);
 
@@ -195,6 +212,7 @@ int main(int argc, char** argv)
 		// Render the Sun
 		simpleShader->UseShader();
 		uniformWorld = simpleShader->GetWorldLocation();
+		simpleShader->Validate();
 		solarSystem->UpdateSun(uniformWorld, delta);
 
 		glUseProgram(0);

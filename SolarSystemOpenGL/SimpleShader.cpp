@@ -42,6 +42,20 @@ std::string SimpleShader::ReadFile(const char* filePath) {
 	return content;
 }
 
+void SimpleShader::Validate()
+{
+	GLint result = 0;
+	GLchar eLog[512] = { 0, };
+
+	glValidateProgram(mShaderID);
+	glGetProgramiv(mShaderID, GL_VALIDATE_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
+		SPDLOG_ERROR("Error validating program: {}", eLog);
+		return;
+	}
+}
+
 void SimpleShader::UseShader() {
 	glUseProgram(mShaderID);
 }
@@ -83,14 +97,6 @@ void SimpleShader::CompileShader(const char* vertexCode, const char* fragmentCod
 	if (!result) {
 		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
 		SPDLOG_ERROR("Error linking program: {}", eLog);
-		return;
-	}
-
-	glValidateProgram(mShaderID);
-	glGetProgramiv(mShaderID, GL_VALIDATE_STATUS, &result);
-	if (!result) {
-		glGetProgramInfoLog(mShaderID, sizeof(eLog), NULL, eLog);
-		SPDLOG_ERROR("Error validating program: {}", eLog);
 		return;
 	}
 

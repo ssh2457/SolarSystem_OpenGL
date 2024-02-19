@@ -18,6 +18,8 @@ public:
 	virtual void CreateFromFiles(const char* vertexPath, const char* fragmentPath);
 	std::string ReadFile(const char* filePath);
 
+	void Validate();
+
 	void UseShader();
 	virtual void ClearShader();
 

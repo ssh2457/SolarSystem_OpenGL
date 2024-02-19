@@ -56,23 +56,10 @@ float CalcOmniShadowFactor()
             shadow += 1.0;
         }
 	}
+    
 	shadow /= float(samples);  
 	
 	return shadow;
-    
-    /*
-    vec3 fragToLight = FragPos - LightPosition;
-    float closest = texture(omnishadowMap.shadowMap, fragToLight).r;
-    
-    closest *= omnishadowMap.farPlane;
-    
-    float current = length(fragToLight);
-    
-    float bias = 0.05;
-    float shadow = current - bias > closest ? 1.0 : 0.0;
-    
-    return shadow;
-    */
 }
 
 
