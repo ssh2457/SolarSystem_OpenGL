@@ -1,4 +1,4 @@
-﻿#define STB_IMAGE_IMPLEMENTATION
+﻿
 
 
 
@@ -28,7 +28,7 @@
 #include "include/SolarSystem.h"
 #include "include/Model.h"
 #include "include/Graphic.h"
-//#include "include/SkyBox.h"
+#include "include/SkyBox.h"
 
 using namespace std;
 
@@ -85,14 +85,14 @@ int main(int argc, char** argv)
 
 
 	vector<string> skyboxFaces;
-	skyboxFaces.push_back("../../Textures/Skybox/space_rt.jpg");
-	skyboxFaces.push_back("../../Textures/Skybox/space_lf.jpg");
-	skyboxFaces.push_back("../../Textures/Skybox/space_up.jpg");
-	skyboxFaces.push_back("../../Textures/Skybox/space_dn.jpg");
-	skyboxFaces.push_back("../../Textures/Skybox/space_bk.jpg");
-	skyboxFaces.push_back("../../Textures/Skybox/space_ft.jpg");
+	skyboxFaces.push_back("../../Textures/Skybox/space_rt.png");
+	skyboxFaces.push_back("../../Textures/Skybox/space_lf.png");
+	skyboxFaces.push_back("../../Textures/Skybox/space_up.png");
+	skyboxFaces.push_back("../../Textures/Skybox/space_dn.png");
+	skyboxFaces.push_back("../../Textures/Skybox/space_bk.png");
+	skyboxFaces.push_back("../../Textures/Skybox/space_ft.png");
 
-	//unique_ptr<SkyBox> skybox = make_unique<SkyBox>(skyboxFaces);
+	unique_ptr<SkyBox> skybox = make_unique<SkyBox>(skyboxFaces);
 
 
 
@@ -107,8 +107,8 @@ int main(int argc, char** argv)
 	pointLightParams.base.ambientIntensity = 0.025f;
 	pointLightParams.base.diffuseIntensity = 1.0f;
 
-	pointLightParams.base.shadowMapParams.width = 1024;
-	pointLightParams.base.shadowMapParams.height = 1024;
+	pointLightParams.base.shadowMapParams.width = 1920;
+	pointLightParams.base.shadowMapParams.height = 1920;
 
 	pointLightParams.posX = 0;
 	pointLightParams.posY = 0;
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//skybox->DrawSkyBox(UBOMatrices, camera->CalcViewMatrix(), projection);
+		skybox->DrawSkyBox(UBOMatrices, camera->CalcViewMatrix(), projection);
 
 		shader->UseShader();
 
