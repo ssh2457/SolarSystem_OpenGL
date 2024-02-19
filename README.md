@@ -1,7 +1,7 @@
 # Solar system simulation using OpenGL
 
 This is a personal project to learn OpenGL.  
-Given eccentricity, the trajectory for each planet is calculated from the Kepler's Equation. Newton's method is used to get numerical positions. The distances and scale for all celestial objects are disorted, while their revolution and rotation periods are proportional to the Earth's rotation period.
+Given eccentricity, the trajectory for each planet is calculated from the Kepler's Equation so that Newton's method is used to get their numerical positions. The distances and scale for all celestial objects are disorted in order to illustrate all planets in a camera scene, while their revolution and rotation periods are proportional to the Earth's rotation period.
 
 In order to visualize its 3D simulation more stereoscopically, a cube box and shadow effect is applied.
 
