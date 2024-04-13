@@ -32,7 +32,7 @@ public:
 		GLuint constantLocation, GLuint linearLocation, GLuint exponentLocation);
 
 	glm::vec3 GetPosition() const { return mPosition; }
-	void SetPosition(glm::vec3& position);
+	void SetPosition(const glm::vec3& position);
 
 
 	std::vector<glm::mat4> CalcLightTransform();

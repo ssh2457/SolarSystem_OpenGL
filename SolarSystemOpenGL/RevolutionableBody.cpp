@@ -12,7 +12,7 @@ RevolutionableBody::RevolutionableBody(revolutionableBodyParams_t& revolutionabl
 }
 
 
-void RevolutionableBody::Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos)
+void RevolutionableBody::Revolve(GLfloat delta, GLfloat periodToScale, const glm::vec3& nearFociPos)
 {
 	float revolutionProportion = mRevolutionPeriod / periodToScale;
 	mAccumulatedRevolutionTime += mRevolutionPeriod * delta / (revolutionProportion * EARTH_REVOLUTION_SIMULATION_PERIOD);

@@ -18,7 +18,7 @@ public:
 	RevolutionableBody() = delete;
 	virtual ~RevolutionableBody() = default;
 
-	void Revolve(GLfloat delta, GLfloat periodToScale, glm::vec3& nearFociPos);
+	void Revolve(GLfloat delta, GLfloat periodToScale, const glm::vec3& nearFociPos);
 	float GetRevolutionPeriod() const;
 	void CalcTrajectory(glm::vec3& nearFociPos);
 

@@ -10,7 +10,7 @@
 class Camera {
 public:
 	Camera() = delete;
-	Camera(glm::vec3& startPosition, glm::vec3& startWorldUp,
+	Camera(const glm::vec3& startPosition, const glm::vec3& startWorldUp,
 				GLfloat startYaw, GLfloat startPitch,
 				GLfloat startMoveSpeed, GLfloat startTurnSpeed);
 	virtual ~Camera();
