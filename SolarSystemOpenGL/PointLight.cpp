@@ -47,7 +47,7 @@ void PointLight::UseLight(GLuint colourLocation,
 	glUniform1f(exponentLocation, mExponent);
 }
 
-void PointLight::SetPosition(glm::vec3& position)
+void PointLight::SetPosition(const glm::vec3& position)
 {
 	mPosition.x = position.x;
 	mPosition.y = position.y;
